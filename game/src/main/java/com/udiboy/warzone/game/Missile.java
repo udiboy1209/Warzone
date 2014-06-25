@@ -8,10 +8,17 @@ public class Missile {
     float x,y;
     float velocity = 2, // velocity -> pixels/update
             acceleration;
+
     int state;
+
     int explode_count=0;
     float[] explode_scale ={0.6f,1.1f,1.5f,1.8f,2.1f,2.3f, 2.5f};
     int[] explode_alpha = {255, 255, 220, 180, 120, 80, 20};
+
+    boolean blink_state =false;
+    public static final int maxBlinkUpdateSkips=6;
+    int blinkUpdatesSkipped=maxBlinkUpdateSkips,
+        blinkCount=0;
 
     public int getX() {
         return Math.round(x);
