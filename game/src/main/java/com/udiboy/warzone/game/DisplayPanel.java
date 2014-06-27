@@ -16,21 +16,21 @@ import android.view.SurfaceView;
 public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
     DisplayThread thread;
     GameCharacter character;
-    MissileRenderer missileRenderer;
-    HealthAndScoreMeter healthAndScore;
+    MissileRenderer missile_renderer;
+    HealthAndScoreMeter health_and_score;
     SensorManager manager;
     Sensor accelerometer;
     Bitmap background;
 
-    float characterMovement = 0;
+    float character_movement = 0;
 
-    int screenHeight,
-        screenWidth,
-        groundLevel;
+    int screen_height,
+        screen_width,
+        ground_level;
 
-    int countDownNum = 3,
-        countDownInterval = 20;
-    float countDownSize = 54;
+    int count_down_num = 3,
+        count_down_interval = 20;
+    float count_down_size = 54;
 
     public static final int STATE_GAME_COUNTDOWN = 3,
                             STATE_GAME_RUNNING = 0,
@@ -52,10 +52,10 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         decodeOpts.inScaled = false;
 
         character = new GameCharacter(BitmapFactory.decodeResource(context.getResources(), R.drawable.stickman,decodeOpts), BitmapFactory.decodeResource(getResources(), R.drawable.stickman_standing,decodeOpts));
-        missileRenderer = new MissileRenderer(BitmapFactory.decodeResource(getResources(), R.drawable.missile,decodeOpts),
+        missile_renderer = new MissileRenderer(BitmapFactory.decodeResource(getResources(), R.drawable.missile,decodeOpts),
                 BitmapFactory.decodeResource(getResources(), R.drawable.missile_blink,decodeOpts),
                 BitmapFactory.decodeResource(getResources(), R.drawable.missile_explode,decodeOpts));
-        healthAndScore = new HealthAndScoreMeter();
+        health_and_score = new HealthAndScoreMeter();
 
         thread = new DisplayThread(getHolder(),this);
     }
@@ -69,20 +69,20 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
     public void surfaceCreated(SurfaceHolder arg0) {
         manager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
 
-        screenHeight = getHeight();
-        screenWidth = getWidth();
-        groundLevel=(screenHeight*99)/100;
-        int charHeight = (screenHeight*2)/10;
+        screen_height = getHeight();
+        screen_width = getWidth();
+        ground_level =(screen_height *99)/100;
+        int charHeight = (screen_height *2)/10;
         character.setDimensions(charHeight);
-        character.maxX=screenWidth-character.width;
+        character.max_x = screen_width -character.width;
 
         int charWidth = character.getWidth();
-        character.setLocation(screenWidth/2-charWidth/2,groundLevel-charHeight);
+        character.setLocation(screen_width /2-charWidth/2, ground_level -charHeight);
 
-        missileRenderer.setScreenDimensions(screenWidth, screenHeight, groundLevel);
-        missileRenderer.setDimensions(charHeight);
+        missile_renderer.setScreenDimensions(screen_width, screen_height, ground_level);
+        missile_renderer.setDimensions(charHeight);
 
-        healthAndScore.setScreenDimensions(screenWidth, screenHeight);
+        health_and_score.setScreenDimensions(screen_width, screen_height);
 
         BitmapFactory.Options decodeOpts = new BitmapFactory.Options();
         decodeOpts.inDither = true;
@@ -107,31 +107,31 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
     }
 
     public void update(){
-        if(healthAndScore.getHealth() <= 0)
+        if(health_and_score.getHealth() <= 0)
             state = STATE_GAME_OVER;
 
         switch(state){
             case STATE_GAME_COUNTDOWN :
-                if(countDownNum > 0){
-                    if(countDownInterval > 0)
-                        countDownInterval--;
+                if(count_down_num > 0){
+                    if(count_down_interval > 0)
+                        count_down_interval--;
                     else {
-                        countDownInterval = 20;
-                        countDownSize = 54;
-                        countDownNum --;
+                        count_down_interval = 20;
+                        count_down_size = 54;
+                        count_down_num--;
                     }
                 } else
                     state=STATE_GAME_RUNNING;
                 break;
             case STATE_GAME_RUNNING :
-                character.moveDistance(characterMovement*1.8f+missileRenderer.getExplosionForce(character.x));
+                character.moveDistance(character_movement * 1.8f + missile_renderer.getExplosionForce(character.x));
 
-                missileRenderer.setMissileRenderField(character.x + character.width / 2);
-                missileRenderer.update();
+                missile_renderer.setMissileRenderField(character.x + character.width / 2);
+                missile_renderer.update();
 
-                healthAndScore.update(missileRenderer.checkCollisionWithCharacter(character.getRect())*-25 + 0.01f, 4*Math.abs(characterMovement) + 1);
+                health_and_score.update(missile_renderer.checkCollisionWithCharacter(character.getRect()) * -25 + 0.01f, 4 * Math.abs(character_movement) + 1);
 
-                characterMovement=0;
+                character_movement =0;
                 break;
             case STATE_GAME_OVER : thread.setRunning(false);
                 break;
@@ -145,17 +145,17 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         character.draw(canvas);
 
         if(state != STATE_GAME_COUNTDOWN)
-            missileRenderer.draw(canvas);
+            missile_renderer.draw(canvas);
 
-        healthAndScore.draw(canvas);
+        health_and_score.draw(canvas);
 
-        if(state == STATE_GAME_COUNTDOWN && countDownNum>0) {
+        if(state == STATE_GAME_COUNTDOWN && count_down_num >0) {
             Paint p = new Paint();
             p.setColor(0xff77a0a0);
-            p.setTextSize(countDownSize);
+            p.setTextSize(count_down_size);
             p.setTextAlign(Paint.Align.CENTER);
-            canvas.drawText(countDownNum+"", screenWidth/2, screenHeight/2, p);
-            countDownSize--;
+            canvas.drawText(count_down_num +"", screen_width /2, screen_height /2, p);
+            count_down_size--;
         }
     }
 
@@ -166,6 +166,6 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
     public void onSensorChanged(SensorEvent event) {
         if(event.sensor.getType() != Sensor.TYPE_ACCELEROMETER || state != STATE_GAME_RUNNING)
             return;
-        characterMovement += event.values[SensorManager.DATA_Y];
+        character_movement += event.values[SensorManager.DATA_Y];
     }
 }

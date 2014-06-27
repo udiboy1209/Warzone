@@ -15,6 +15,6 @@ Note: If you play this game, and your health goes zero, the game will look like 
 TODO
 ====
 
-[ ] Write a better missile generation algorithm
-[ ] Use more realistic explosion animation
-[ ] Create stickman_hit animation, and improve animation of being thrown away
+ * Write a better missile generation algorithm
+ * Use more realistic explosion animation
+ * Create stickman_hit animation, and improve animation of being thrown away

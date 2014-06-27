@@ -23,37 +23,37 @@ public class DisplayThread extends Thread{
     public void run(){
         Canvas canvas;
 
-        long beginTime;
-        long timeDiff;
-        int sleepTime;
-        int framesSkipped;
+        long begin_time;
+        long time_diff;
+        int sleep_time;
+        int frames_skipped;
 
         while(running){
             canvas = null;
             try{
                 canvas = holder.lockCanvas();
                 synchronized (holder){
-                    beginTime = System.currentTimeMillis();
-                    framesSkipped = 0;
+                    begin_time = System.currentTimeMillis();
+                    frames_skipped = 0;
 
                     panel.update();
                     panel.render(canvas);
 
-                    timeDiff = System.currentTimeMillis() - beginTime;
-                    sleepTime = (int) (FRAME_PERIOD - timeDiff);
+                    time_diff = System.currentTimeMillis() - begin_time;
+                    sleep_time = (int) (FRAME_PERIOD - time_diff);
 
-                    if(sleepTime > 0){
+                    if(sleep_time > 0){
                         try{
-                            Thread.sleep(sleepTime);
-                            Log.d("Thread","Sleeping for:"+sleepTime+" ms");
+                            Thread.sleep(sleep_time);
+                            Log.d("Thread","Sleeping for:"+sleep_time+" ms");
                         } catch(InterruptedException e){}
                     }
 
-                    while (sleepTime < 0 && framesSkipped < MAX_FRAME_SKIPS){
-                        Log.w("Thread","Skipped frame! sleepTime: "+sleepTime);
+                    while (sleep_time < 0 && frames_skipped < MAX_FRAME_SKIPS){
+                        Log.w("Thread","Skipped frame! sleepTime: "+sleep_time);
                         this.panel.update();
-                        sleepTime += FRAME_PERIOD;
-                        framesSkipped++;
+                        sleep_time += FRAME_PERIOD;
+                        frames_skipped++;
                     }
                 }
             } finally {

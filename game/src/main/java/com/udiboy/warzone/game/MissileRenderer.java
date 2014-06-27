@@ -9,18 +9,18 @@ import android.util.Log;
 
 public class MissileRenderer {
     Bitmap bitmap_fall, bitmap_blink, bitmap_explode;
-    ArrayList<Missile> missiles,missilesForCollisionCheck;
-    int width, height, width_explode, height_explode, screenWidth, screenHeight, charHeight;
-    float maxMissilePerUpdate = 1f,
-          missileCountUpdateRate = 0.05f,
-          missileCollisionTolerance=0.2f;
+    ArrayList<Missile> missiles, missiles_for_collision_check;
+    int width, height, width_explode, height_explode, screen_width, screen_height, char_height;
+    float max_missile_per_update = 1f,
+          missile_count_update_rate = 0.05f,
+          missile_collision_tolerance =0.2f;
 
-    int updatesSkipped = 50,//30,
-        maxUpdateSkips = 50,//30,
-        missileRenderFieldStart,
-        missileRenderFieldEnd,
-        missileRenderFieldWidth,
-        groundLevel;
+    int updates_skipped = 50,//30,
+        max_update_skips = 50,//30,
+        missile_render_field_start,
+        missile_render_field_end,
+        missile_render_field_width,
+        ground_level;
 
     private static final float GRAVITY = 0.06f;// pixel/update^2
 
@@ -29,23 +29,23 @@ public class MissileRenderer {
         this.bitmap_blink = bitmap_blink;
         this.bitmap_explode = bitmap_explode;
         missiles = new ArrayList<Missile>();
-        missilesForCollisionCheck = new ArrayList<Missile>();
+        missiles_for_collision_check = new ArrayList<Missile>();
 
         //Log.i("Missile",bitmap_fall.getWidth()+"x"+ bitmap_fall.getHeight());
         //Log.i("Missile","<------- MissileRenderer Created ------->");
     }
 
     public void update(){
-        if(updatesSkipped < maxUpdateSkips){
-            updatesSkipped ++ ;
-            //Log.v("Missile","-> Skipped adding missile. Skips: "+updatesSkipped);
+        if(updates_skipped < max_update_skips){
+            updates_skipped++ ;
+            //Log.v("Missile","-> Skipped adding missile. Skips: "+updates_skipped);
         } else {
             //Log.w("Missile","<------ Adding missile start. ---->");
             int missilesRendered = 0, tries=0;
 
-            while(missilesRendered < Math.round(maxMissilePerUpdate)){
+            while(missilesRendered < Math.round(max_missile_per_update)){
                 tries++;
-                Missile newMissile = new Missile(missileRenderFieldStart + (float)Math.random() * (missileRenderFieldEnd - missileRenderFieldStart), - height - (float)(Math.random()*screenHeight*0.2),GRAVITY/*+(0.08*Math.random())-0.04*/);
+                Missile newMissile = new Missile(missile_render_field_start + (float)Math.random() * (missile_render_field_end - missile_render_field_start), - height - (float)(Math.random()* screen_height *0.2),GRAVITY/*+(0.08*Math.random())-0.04*/);
                 if(collidesWithMissile(newMissile)){
                     Log.e("Missile", "-> Missile not added due to collision");
                     if(tries<110) continue;
@@ -56,14 +56,14 @@ public class MissileRenderer {
                 Log.d("Missile","-> Missile added. Total added: "+missilesRendered);
             }
 
-            maxMissilePerUpdate += missileCountUpdateRate;
-            missileRenderFieldWidth=(screenWidth*Math.round(maxMissilePerUpdate))/10;
-            if(maxMissilePerUpdate>10) {
-                missileCountUpdateRate=0;
-                maxMissilePerUpdate=10;
+            max_missile_per_update += missile_count_update_rate;
+            missile_render_field_width =(screen_width *Math.round(max_missile_per_update))/10;
+            if(max_missile_per_update >10) {
+                missile_count_update_rate =0;
+                max_missile_per_update =10;
             }
-            updatesSkipped=0;
-            //Log.i("Missile","maxMissilePerUpdate: "+maxMissilePerUpdate+"\nmissileCountUpdateRate: "+missileCountUpdateRate+"\nTotal missilesFalling: "+missilesFalling.size());
+            updates_skipped =0;
+            //Log.i("Missile","max_missile_per_update: "+max_missile_per_update+"\nmissile_count_update_rate: "+missile_count_update_rate+"\nTotal missilesFalling: "+missilesFalling.size());
             //Log.w("Missile","<------ Adding missile end. ------>");
         }
 
@@ -72,28 +72,28 @@ public class MissileRenderer {
             Missile missileI = missiles.get(i);
             switch (missileI.getState()){
                 case Missile.STATE_FALLING :
-                    if(missileI.getY()+height < groundLevel){
+                    if(missileI.getY()+height < ground_level){
                         missileI.incrementYPos();
-                        if(!missilesForCollisionCheck.contains(missileI) && Rect.intersects(new Rect(0,missileI.getY(),screenWidth,missileI.getY()+height), new Rect(0,groundLevel - charHeight,screenWidth, groundLevel))){
-                            missilesForCollisionCheck.add(missileI);
-                            //Log.w("Missile","Missile "+missileI.hashCode() +" added for collision check. Array size: "+missilesForCollisionCheck.size());
+                        if(!missiles_for_collision_check.contains(missileI) && Rect.intersects(new Rect(0,missileI.getY(), screen_width,missileI.getY()+height), new Rect(0, ground_level - char_height, screen_width, ground_level))){
+                            missiles_for_collision_check.add(missileI);
+                            //Log.w("Missile","Missile "+missileI.hashCode() +" added for collision check. Array size: "+missiles_for_collision_check.size());
                         }
                     }
                     break;
                 case Missile.STATE_BLINKING:
-                    if(missileI.blinkUpdatesSkipped < Missile.maxBlinkUpdateSkips){
-                        missileI.blinkUpdatesSkipped++;
+                    if(missileI.blink_updates_skipped < missileI.max_blink_update_skips){
+                        missileI.blink_updates_skipped++;
                     } else {
-                        //Log.d("Missile","blinkCount:"+missileI.blinkCount+"\nblink_state:"+missileI.blink_state);
+                        //Log.d("Missile","blink_count:"+missileI.blink_count+"\nblink_state:"+missileI.blink_state);
                         missileI.blink_state = !missileI.blink_state;
-                        if(!missileI.blink_state) missileI.blinkCount++;
+                        if(!missileI.blink_state) missileI.blink_count++;
 
-                        if (missileI.blinkCount == 3){
+                        if (missileI.blink_count == 3){
                             missileI.setState(Missile.STATE_EXPLODING);
-                            missilesForCollisionCheck.remove(missileI);
+                            missiles_for_collision_check.remove(missileI);
                         }
 
-                        missileI.blinkUpdatesSkipped=0;
+                        missileI.blink_updates_skipped =0;
                     }
                     break;
                 case Missile.STATE_EXPLODING:
@@ -129,47 +129,47 @@ public class MissileRenderer {
         }
     }
 
-    public void setDimensions(int charHeight){
-        this.width = (bitmap_fall.getWidth() * charHeight)/bitmap_fall.getHeight()/2;
-        this.height = charHeight/2;
-        this.charHeight=charHeight;
-        this.width_explode=2*(bitmap_explode.getWidth() * charHeight)/bitmap_explode.getHeight()/3;
-        this.height_explode = 2*charHeight/3;
+    public void setDimensions(int char_height){
+        this.width = (bitmap_fall.getWidth() * char_height)/bitmap_fall.getHeight()/2;
+        this.height = char_height/2;
+        this.char_height =char_height;
+        this.width_explode=2*(bitmap_explode.getWidth() * char_height)/bitmap_explode.getHeight()/3;
+        this.height_explode = 2*char_height/3;
 
         bitmap_fall=Bitmap.createScaledBitmap(bitmap_fall, width, height, false);
         bitmap_blink=Bitmap.createScaledBitmap(bitmap_blink, width, height, false);
         //Log.d("Missile","dimen: "+width+"x"+height);
     }
 
-    public void setScreenDimensions(int screenWidth, int screenHeight, int groundLevel){
-        this.screenHeight = screenHeight;
-        this.screenWidth = screenWidth;
-        this.groundLevel=groundLevel;
+    public void setScreenDimensions(int screen_width, int screen_height, int ground_level){
+        this.screen_height = screen_height;
+        this.screen_width = screen_width;
+        this.ground_level =ground_level;
 
-        missileRenderFieldWidth=(screenWidth*Math.round(maxMissilePerUpdate))/10;
+        missile_render_field_width =(screen_width*Math.round(max_missile_per_update))/10;
     }
 
-    public void setMissileRenderField(float charX){
-        missileRenderFieldStart = (int) (charX - missileRenderFieldWidth/2);
-        missileRenderFieldEnd = (int) (charX + missileRenderFieldWidth/2 - width);
+    public void setMissileRenderField(float char_x){
+        missile_render_field_start = (int) (char_x - missile_render_field_width /2);
+        missile_render_field_end = (int) (char_x + missile_render_field_width /2 - width);
 
-        if(missileRenderFieldStart < 0){
-            missileRenderFieldEnd += Math.abs(missileRenderFieldStart);
-            missileRenderFieldStart = 0;
+        if(missile_render_field_start < 0){
+            missile_render_field_end += Math.abs(missile_render_field_start);
+            missile_render_field_start = 0;
         }
 
-        if(missileRenderFieldEnd > screenWidth){
-            missileRenderFieldStart -= missileRenderFieldEnd -screenWidth;
-            missileRenderFieldEnd = screenWidth - width;
+        if(missile_render_field_end > screen_width){
+            missile_render_field_start -= missile_render_field_end - screen_width;
+            missile_render_field_end = screen_width - width;
         }
     }
 
     public boolean collidesWithMissile(Missile m){
-        Rect mRect = new Rect(m.getX() - (int)(width*missileCollisionTolerance), m.getY() - (int)(height*missileCollisionTolerance),(int) (m.getX()+(1+missileCollisionTolerance)*width), (int) (m.getY()+(1+missileCollisionTolerance)*height));
+        Rect m_rect = new Rect(m.getX() - (int)(width* missile_collision_tolerance), m.getY() - (int)(height* missile_collision_tolerance),(int) (m.getX()+(1+ missile_collision_tolerance)*width), (int) (m.getY()+(1+ missile_collision_tolerance)*height));
         for(Missile missile : missiles){
             if(missile.getState() == Missile.STATE_FALLING) {
-                Rect missileRect = new Rect(missile.getX() - (int)(width*missileCollisionTolerance), missile.getY() - (int)(height*missileCollisionTolerance),(int) (missile.getX()+(1+missileCollisionTolerance)*width), (int) (missile.getY()+(1+missileCollisionTolerance)*height));
-                if(Rect.intersects(mRect,  missileRect))
+                Rect missile_rect = new Rect(missile.getX() - (int)(width* missile_collision_tolerance), missile.getY() - (int)(height* missile_collision_tolerance),(int) (missile.getX()+(1+ missile_collision_tolerance)*width), (int) (missile.getY()+(1+ missile_collision_tolerance)*height));
+                if(Rect.intersects(m_rect,  missile_rect))
                     return true;
             }
         }
@@ -178,15 +178,15 @@ public class MissileRenderer {
 
     public int checkCollisionWithCharacter(Rect rect) {
         int num = 0;
-        for(int i = 0; i < missilesForCollisionCheck.size(); i++){
-            Missile missile = missilesForCollisionCheck.get(i);
-            Rect missileRect = new Rect(missile.getX(), missile.getY(), missile.getX()+width, missile.getY()+height);
-            if(Rect.intersects(rect,  missileRect)){
+        for(int i = 0; i < missiles_for_collision_check.size(); i++){
+            Missile missile = missiles_for_collision_check.get(i);
+            Rect missile_rect = new Rect(missile.getX(), missile.getY(), missile.getX()+width, missile.getY()+height);
+            if(Rect.intersects(rect,  missile_rect)){
                 num++;
                 missile.setState(Missile.STATE_EXPLODING);
-                missilesForCollisionCheck.remove(i);
+                missiles_for_collision_check.remove(i);
                 i--;
-            }else if(missile.getY()+height >= groundLevel && missile.getState() == Missile.STATE_FALLING){
+            }else if(missile.getY()+height >= ground_level && missile.getState() == Missile.STATE_FALLING){
                 missile.setState(Missile.STATE_BLINKING);
             }
         }
@@ -200,11 +200,11 @@ public class MissileRenderer {
             if(missile.getState() == Missile.STATE_EXPLODING){
                 if(missile.explode_count==0) {
                     float a=x-missile.getX()-width_explode*missile.getExplodeScale()/2;
-                    dist+=screenWidth/a/2;
+                    dist+= screen_width /a/2;
                 }
             }
         }
-        if(Math.abs(dist) > screenWidth/2) dist = Math.signum(dist)*screenWidth/2;
+        if(Math.abs(dist) > screen_width /2) dist = Math.signum(dist)* screen_width /2;
         return dist;
     }
 }

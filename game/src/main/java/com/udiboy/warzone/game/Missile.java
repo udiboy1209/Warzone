@@ -16,9 +16,9 @@ public class Missile {
     int[] explode_alpha = {255, 255, 220, 180, 120, 80, 20};
 
     boolean blink_state =false;
-    public static final int maxBlinkUpdateSkips=6;
-    int blinkUpdatesSkipped=maxBlinkUpdateSkips,
-        blinkCount=0;
+    int max_blink_update_skips =6,
+        blink_updates_skipped = max_blink_update_skips,
+        blink_count =0;
 
     public int getX() {
         return Math.round(x);

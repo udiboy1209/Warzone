@@ -7,7 +7,7 @@ import android.graphics.Rect;
 import android.util.Log;
 
 public class GameCharacter {
-    float targetX, x, maxX;
+    float target_x, x, max_x;
     int y, width,height,
             sprite_offset = 0;
 
@@ -15,22 +15,21 @@ public class GameCharacter {
             FRAME_REPEAT_NO = 2;
     boolean direction = true,//true is to right, false is to left
             moving = false;
-    Bitmap runningBitmap, standingBitmap;
+    Bitmap running_bitmap, standing_bitmap;
 
-    public GameCharacter(Bitmap runningBitmap, Bitmap standingBitmap){
-        this.runningBitmap = runningBitmap;
-        this.standingBitmap = standingBitmap;
+    public GameCharacter(Bitmap running_bitmap, Bitmap standing_bitmap){
+        this.running_bitmap = running_bitmap;
+        this.standing_bitmap = standing_bitmap;
     }
 
     public void setDimensions(int height){
         this.height = height;
-        int w = (FRAME_REPEAT_NO*runningBitmap.getWidth()*height)/(NUM_FRAMES*runningBitmap.getHeight());
-        this.width = (int)w;
-        Log.d("Character",""+w+"\n"+runningBitmap.getWidth()+"\n"+runningBitmap.getHeight());
+        this.width = (FRAME_REPEAT_NO* running_bitmap.getWidth()*height)/(NUM_FRAMES* running_bitmap.getHeight());
+        Log.d("Character",""+this.width+"\n"+ running_bitmap.getWidth()+"\n"+ running_bitmap.getHeight());
     }
 
     public void setLocation(int x, int y){
-        this.x = x; this.targetX=x;
+        this.x = x; this.target_x =x;
         this.y = y;
     }
 
@@ -41,19 +40,19 @@ public class GameCharacter {
             Matrix m = new Matrix();
             m.setScale(direction ? 1.0f : -1.0f, 1.0f);
 
-            Bitmap croppedBitmap = Bitmap.createBitmap(runningBitmap,temp_sprite_offset * 44, 0, FRAME_REPEAT_NO*runningBitmap.getWidth()/NUM_FRAMES, runningBitmap.getHeight(),m,true);
+            Bitmap cropped_bitmap = Bitmap.createBitmap(running_bitmap,temp_sprite_offset * 44, 0, FRAME_REPEAT_NO* running_bitmap.getWidth()/NUM_FRAMES, running_bitmap.getHeight(),m,true);
 
-            canvas.drawBitmap(Bitmap.createScaledBitmap(croppedBitmap, width, height, true),Math.round(x) ,y ,null);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(cropped_bitmap, width, height, true),Math.round(x) ,y ,null);
         } else {
-            canvas.drawBitmap(Bitmap.createScaledBitmap(standingBitmap, width, height, true), Math.round(x), y, null);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(standing_bitmap, width, height, true), Math.round(x), y, null);
         }
     }
 
     public void moveDistance(float d){
-        targetX+=d;
-        x += Math.min(20,(targetX-x)*0.5);
-        if(targetX<0)targetX=0; if(targetX>maxX)targetX=maxX;
-        if(x<0)x=0; if(x>maxX)x=maxX;
+        target_x +=d;
+        x += Math.min(20,(target_x -x)*0.5);
+        if(target_x <0) target_x =0; if(target_x > max_x) target_x = max_x;
+        if(x<0)x=0; if(x> max_x)x= max_x;
         sprite_offset = (++sprite_offset) % NUM_FRAMES;
 
         direction = d>0;
