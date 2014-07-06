@@ -4,12 +4,45 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="@drawable/splash_back"
     tools:context="com.udiboy.warzone.game.SplashActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Game"
-        android:onClick="onClick"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
 
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/splash_logo"
+            android:scaleType="centerInside"
+            android:src="@drawable/splash_logo"
+            android:layout_weight="2" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Game"
+                android:id="@+id/start_game"
+                style="@style/ButtonSplash"
+                android:onClick="onClick" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:id="@+id/splash_text"
+        android:scaleType="centerInside"
+        android:src="@drawable/splash_text"
+        android:layout_weight="1" />
 </LinearLayout>

@@ -8,11 +8,12 @@ import android.util.Log;
 
 public class GameCharacter {
     float target_x, x, max_x;
-    int y, width,height,
+    int y, width,width_standing,height,
             sprite_offset = 0;
 
-    public static int NUM_FRAMES = 14,
-            FRAME_REPEAT_NO = 2;
+    public static int NUM_FRAMES = 9;
+            //FRAME_REPEAT_NO = 1;
+    int frame_width=0;
     boolean direction = true,//true is to right, false is to left
             moving = false;
     Bitmap running_bitmap, standing_bitmap;
@@ -24,7 +25,9 @@ public class GameCharacter {
 
     public void setDimensions(int height){
         this.height = height;
-        this.width = (FRAME_REPEAT_NO* running_bitmap.getWidth()*height)/(NUM_FRAMES* running_bitmap.getHeight());
+        this.width = (running_bitmap.getWidth()*height)/(NUM_FRAMES* running_bitmap.getHeight());
+        this.width_standing = (standing_bitmap.getWidth()*height)/standing_bitmap.getHeight();
+        frame_width = running_bitmap.getWidth()/NUM_FRAMES;
         Log.d("Character",""+this.width+"\n"+ running_bitmap.getWidth()+"\n"+ running_bitmap.getHeight());
     }
 
@@ -34,17 +37,17 @@ public class GameCharacter {
     }
 
     public void draw(Canvas canvas){
-        int temp_sprite_offset = sprite_offset/FRAME_REPEAT_NO; // truncate the quotient to int
+        int temp_sprite_offset = sprite_offset; // truncate the quotient to int
         //Log.i("GameCharacter","temp sprite offset: "+temp_sprite_offset);
         if(moving){
             Matrix m = new Matrix();
             m.setScale(direction ? 1.0f : -1.0f, 1.0f);
 
-            Bitmap cropped_bitmap = Bitmap.createBitmap(running_bitmap,temp_sprite_offset * 44, 0, FRAME_REPEAT_NO* running_bitmap.getWidth()/NUM_FRAMES, running_bitmap.getHeight(),m,true);
+            Bitmap cropped_bitmap = Bitmap.createBitmap(running_bitmap,temp_sprite_offset * frame_width, 0, running_bitmap.getWidth()/NUM_FRAMES, running_bitmap.getHeight(),m,true);
 
-            canvas.drawBitmap(Bitmap.createScaledBitmap(cropped_bitmap, width, height, true),Math.round(x) ,y ,null);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(cropped_bitmap, width, height, true),Math.round(x)-getWidth()/2 ,y ,null);
         } else {
-            canvas.drawBitmap(Bitmap.createScaledBitmap(standing_bitmap, width, height, true), Math.round(x), y, null);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(standing_bitmap, width_standing, height, true), Math.round(x)-getWidth()/2, y, null);
         }
     }
 
@@ -60,11 +63,11 @@ public class GameCharacter {
     }
 
     public Rect getRect() {
-        return new Rect(Math.round(x),y,Math.round(x)+width, y+height);
+        return new Rect(Math.round(x)-getWidth()/2,y,Math.round(x)+getWidth()/2, y+height);
     }
 
-    public int getWidth() {
-        return width;
+    public int getWidth(){
+        return (moving?width:width_standing);
     }
 }
 

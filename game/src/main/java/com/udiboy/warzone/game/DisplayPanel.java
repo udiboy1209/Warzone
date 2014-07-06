@@ -74,10 +74,9 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         ground_level =(screen_height *99)/100;
         int charHeight = (screen_height *2)/10;
         character.setDimensions(charHeight);
-        character.max_x = screen_width -character.width;
+        character.max_x = screen_width;
 
-        int charWidth = character.getWidth();
-        character.setLocation(screen_width /2-charWidth/2, ground_level -charHeight);
+        character.setLocation(screen_width/2, ground_level -charHeight);
 
         missile_renderer.setScreenDimensions(screen_width, screen_height, ground_level);
         missile_renderer.setDimensions(charHeight);

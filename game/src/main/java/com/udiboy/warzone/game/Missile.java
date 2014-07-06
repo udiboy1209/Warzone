@@ -12,8 +12,6 @@ public class Missile {
     int state;
 
     int explode_count=0;
-    float[] explode_scale ={0.6f,1.1f,1.5f,1.8f,2.1f,2.3f, 2.5f};
-    int[] explode_alpha = {255, 255, 220, 180, 120, 80, 20};
 
     boolean blink_state =false;
     int max_blink_update_skips =6,
@@ -32,18 +30,6 @@ public class Missile {
 
     public int getY() {
         return Math.round(y);
-    }
-
-    public void incrementExplodeCount(){
-        explode_count++;
-    }
-
-    public float getExplodeScale(){
-        return explode_scale[explode_count];
-    }
-
-    public int getExplodeAlpha(){
-        return explode_alpha[explode_count];
     }
 
     public int getState() {

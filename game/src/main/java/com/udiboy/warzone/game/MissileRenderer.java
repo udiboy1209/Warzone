@@ -3,14 +3,14 @@ package com.udiboy.warzone.game;
 import java.util.ArrayList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
 public class MissileRenderer {
     Bitmap bitmap_fall, bitmap_blink, bitmap_explode;
     ArrayList<Missile> missiles, missiles_for_collision_check;
-    int width, height, width_explode, height_explode, screen_width, screen_height, char_height;
+    int width, height, width_explode, height_explode, screen_width, screen_height, char_height, frame_width;
+    public static int NUM_EXPLODE_FRAMES=18;
     float max_missile_per_update = 1f,
           missile_count_update_rate = 0.05f,
           missile_collision_tolerance =0.2f;
@@ -97,11 +97,11 @@ public class MissileRenderer {
                     }
                     break;
                 case Missile.STATE_EXPLODING:
-                    if(missileI.explode_count==6){
+                    if(missileI.explode_count==NUM_EXPLODE_FRAMES-1){
                         missiles.remove(i);
                         i--;
                     } else {
-                        missileI.incrementExplodeCount();
+                        missileI.explode_count++;
                     }
                     break;
             }
@@ -110,7 +110,6 @@ public class MissileRenderer {
     }
 
     public void draw(Canvas canvas){
-        Paint paint=new Paint();
         for(Missile missile : missiles){
             switch(missile.getState()){
             case Missile.STATE_FALLING:
@@ -120,10 +119,10 @@ public class MissileRenderer {
                 canvas.drawBitmap(missile.blink_state ? bitmap_blink : bitmap_fall, missile.getX(), missile.getY(), null);
                 break;
             case Missile.STATE_EXPLODING:
-                paint.setAlpha(missile.getExplodeAlpha());
-                int x=missile.getX()+width/2-(int)(width_explode*missile.getExplodeScale())/2,
-                    y=missile.getY()+2*height/3-(int)(height_explode*missile.getExplodeScale())/2;
-                canvas.drawBitmap(Bitmap.createScaledBitmap(bitmap_explode,(int)(width_explode*missile.getExplodeScale()),(int)(height_explode*missile.getExplodeScale()),false), x, y, paint);
+                int x=missile.getX()+(width-width_explode)/2,
+                    y=missile.getY()+2*height/3-height_explode/2;
+                Bitmap cropped_bitmap = Bitmap.createBitmap(bitmap_explode,missile.explode_count * frame_width, 0, bitmap_explode.getWidth()/NUM_EXPLODE_FRAMES, bitmap_explode.getHeight(),null,true);
+                canvas.drawBitmap(Bitmap.createScaledBitmap(cropped_bitmap,width_explode,height_explode,false), x, y, null);
                 break;
             }
         }
@@ -133,9 +132,9 @@ public class MissileRenderer {
         this.width = (bitmap_fall.getWidth() * char_height)/bitmap_fall.getHeight()/2;
         this.height = char_height/2;
         this.char_height =char_height;
-        this.width_explode=2*(bitmap_explode.getWidth() * char_height)/bitmap_explode.getHeight()/3;
         this.height_explode = 2*char_height/3;
-
+        this.width_explode = this.height_explode*bitmap_explode.getWidth()/NUM_EXPLODE_FRAMES/bitmap_explode.getHeight();
+        this.frame_width=bitmap_explode.getWidth()/NUM_EXPLODE_FRAMES;
         bitmap_fall=Bitmap.createScaledBitmap(bitmap_fall, width, height, false);
         bitmap_blink=Bitmap.createScaledBitmap(bitmap_blink, width, height, false);
         //Log.d("Missile","dimen: "+width+"x"+height);
@@ -199,7 +198,7 @@ public class MissileRenderer {
         for(Missile missile:missiles){
             if(missile.getState() == Missile.STATE_EXPLODING){
                 if(missile.explode_count==0) {
-                    float a=x-missile.getX()-width_explode*missile.getExplodeScale()/2;
+                    float a=x-missile.getX()-width_explode/2;
                     dist+= screen_width /a/2;
                 }
             }
