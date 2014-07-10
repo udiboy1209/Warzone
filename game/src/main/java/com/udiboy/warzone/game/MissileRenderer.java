@@ -12,7 +12,7 @@ public class MissileRenderer {
     int width, height, width_explode, height_explode, screen_width, screen_height, char_height, frame_width;
     public static int NUM_EXPLODE_FRAMES=18;
     float max_missile_per_update = 1f,
-          missile_count_update_rate = 0.05f,
+          missile_count_update_rate = 0.08f,
           missile_collision_tolerance =0.2f;
 
     int updates_skipped = 50,//30,
@@ -22,7 +22,7 @@ public class MissileRenderer {
         missile_render_field_width,
         ground_level;
 
-    private static final float GRAVITY = 0.06f;// pixel/update^2
+    private static final float GRAVITY = 0.09f;// pixel/update^2
 
     public MissileRenderer(Bitmap bitmap_fall, Bitmap bitmap_blink, Bitmap bitmap_explode){
         this.bitmap_fall = bitmap_fall;

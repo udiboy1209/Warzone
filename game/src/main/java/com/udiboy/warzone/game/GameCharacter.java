@@ -17,7 +17,7 @@ public class GameCharacter {
         y,
         velocity_y,
 
-        GRAVITY = 1.2f,
+        GRAVITY = 1.5f,
         INITIAL_VELOCITY;
 
     int ground_level,
