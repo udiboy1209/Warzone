@@ -10,6 +10,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -32,6 +33,8 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         count_down_interval = 20;
     float count_down_size = 54;
 
+    float swipe_gesture_start=-1;
+
     public static final int STATE_GAME_COUNTDOWN = 3,
                             STATE_GAME_RUNNING = 0,
                             STATE_GAME_OVER = 1,
@@ -51,7 +54,9 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         decodeOpts.inDither = true;
         decodeOpts.inScaled = false;
 
-        character = new GameCharacter(BitmapFactory.decodeResource(context.getResources(), R.drawable.stickman,decodeOpts), BitmapFactory.decodeResource(getResources(), R.drawable.stickman_standing,decodeOpts));
+        character = new GameCharacter(BitmapFactory.decodeResource(context.getResources(), R.drawable.stickman,decodeOpts),
+                BitmapFactory.decodeResource(getResources(), R.drawable.stickman_standing,decodeOpts),
+                BitmapFactory.decodeResource(getResources(), R.drawable.stickman_jumping,decodeOpts));
         missile_renderer = new MissileRenderer(BitmapFactory.decodeResource(getResources(), R.drawable.missile,decodeOpts),
                 BitmapFactory.decodeResource(getResources(), R.drawable.missile_blink,decodeOpts),
                 BitmapFactory.decodeResource(getResources(), R.drawable.missile_explode,decodeOpts));
@@ -73,10 +78,10 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         screen_width = getWidth();
         ground_level =(screen_height *99)/100;
         int charHeight = (screen_height *2)/10;
-        character.setDimensions(charHeight);
+        character.setDimensions(charHeight, ground_level);
         character.max_x = screen_width;
 
-        character.setLocation(screen_width/2, ground_level -charHeight);
+        character.setLocation(screen_width/2, ground_level);
 
         missile_renderer.setScreenDimensions(screen_width, screen_height, ground_level);
         missile_renderer.setDimensions(charHeight);
@@ -125,7 +130,7 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
             case STATE_GAME_RUNNING :
                 character.moveDistance(character_movement * 1.8f + missile_renderer.getExplosionForce(character.x));
 
-                missile_renderer.setMissileRenderField(character.x + character.width / 2);
+                missile_renderer.setMissileRenderField(character.x + character.getWidth() / 2);
                 missile_renderer.update();
 
                 health_and_score.update(missile_renderer.checkCollisionWithCharacter(character.getRect()) * -25 + 0.01f, 4 * Math.abs(character_movement) + 1);
@@ -166,5 +171,26 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         if(event.sensor.getType() != Sensor.TYPE_ACCELEROMETER || state != STATE_GAME_RUNNING)
             return;
         character_movement += event.values[SensorManager.DATA_Y];
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent me){
+        switch(me.getActionMasked()){
+            case MotionEvent.ACTION_DOWN:
+                swipe_gesture_start=me.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                return swipe_gesture_start>=0;
+            case MotionEvent.ACTION_UP:
+                if(Math.abs(swipe_gesture_start-me.getY())>screen_height/5){
+                    if(swipe_gesture_start>me.getY()){
+                        character.jump();
+                    }
+                }
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 }

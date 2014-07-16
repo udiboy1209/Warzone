@@ -8,11 +8,11 @@ import android.util.Log;
 
 public class MissileRenderer {
     Bitmap bitmap_fall, bitmap_blink, bitmap_explode;
-    ArrayList<Missile> missiles, missiles_for_collision_check;
+    ArrayList<Missile> missiles;
     int width, height, width_explode, height_explode, screen_width, screen_height, char_height, frame_width;
     public static int NUM_EXPLODE_FRAMES=18;
     float max_missile_per_update = 1f,
-          missile_count_update_rate = 0.05f,
+          missile_count_update_rate = 0.08f,
           missile_collision_tolerance =0.2f;
 
     int updates_skipped = 50,//30,
@@ -22,14 +22,13 @@ public class MissileRenderer {
         missile_render_field_width,
         ground_level;
 
-    private static final float GRAVITY = 0.06f;// pixel/update^2
+    private static final float GRAVITY = 0.09f;// pixel/update^2
 
     public MissileRenderer(Bitmap bitmap_fall, Bitmap bitmap_blink, Bitmap bitmap_explode){
         this.bitmap_fall = bitmap_fall;
         this.bitmap_blink = bitmap_blink;
         this.bitmap_explode = bitmap_explode;
         missiles = new ArrayList<Missile>();
-        missiles_for_collision_check = new ArrayList<Missile>();
 
         //Log.i("Missile",bitmap_fall.getWidth()+"x"+ bitmap_fall.getHeight());
         //Log.i("Missile","<------- MissileRenderer Created ------->");
@@ -74,23 +73,19 @@ public class MissileRenderer {
                 case Missile.STATE_FALLING :
                     if(missileI.getY()+height < ground_level){
                         missileI.incrementYPos();
-                        if(!missiles_for_collision_check.contains(missileI) && Rect.intersects(new Rect(0,missileI.getY(), screen_width,missileI.getY()+height), new Rect(0, ground_level - char_height, screen_width, ground_level))){
-                            missiles_for_collision_check.add(missileI);
-                            //Log.w("Missile","Missile "+missileI.hashCode() +" added for collision check. Array size: "+missiles_for_collision_check.size());
-                        }
+                    } else {
+                        missileI.setState(Missile.STATE_BLINKING);
                     }
                     break;
                 case Missile.STATE_BLINKING:
                     if(missileI.blink_updates_skipped < missileI.max_blink_update_skips){
                         missileI.blink_updates_skipped++;
                     } else {
-                        //Log.d("Missile","blink_count:"+missileI.blink_count+"\nblink_state:"+missileI.blink_state);
                         missileI.blink_state = !missileI.blink_state;
                         if(!missileI.blink_state) missileI.blink_count++;
 
                         if (missileI.blink_count == 3){
                             missileI.setState(Missile.STATE_EXPLODING);
-                            missiles_for_collision_check.remove(missileI);
                         }
 
                         missileI.blink_updates_skipped =0;
@@ -177,16 +172,13 @@ public class MissileRenderer {
 
     public int checkCollisionWithCharacter(Rect rect) {
         int num = 0;
-        for(int i = 0; i < missiles_for_collision_check.size(); i++){
-            Missile missile = missiles_for_collision_check.get(i);
+        for(Missile missile : missiles){
+            if(missile.state==Missile.STATE_EXPLODING) continue;
+
             Rect missile_rect = new Rect(missile.getX(), missile.getY(), missile.getX()+width, missile.getY()+height);
             if(Rect.intersects(rect,  missile_rect)){
                 num++;
                 missile.setState(Missile.STATE_EXPLODING);
-                missiles_for_collision_check.remove(i);
-                i--;
-            }else if(missile.getY()+height >= ground_level && missile.getState() == Missile.STATE_FALLING){
-                missile.setState(Missile.STATE_BLINKING);
             }
         }
 
