@@ -26,6 +26,9 @@
     <style name="ButtonSplash">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:scaleType">centerInside</item>
         <item name="android:background">@drawable/splash_button_back</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">20dp</item>
