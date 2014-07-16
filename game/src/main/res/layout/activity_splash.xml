@@ -11,8 +11,7 @@
     android:layout_width="0dp"
     android:layout_height="fill_parent"
     android:id="@+id/splash_logo"
-    android:scaleType="centerInside"
-    android:src="@drawable/splash_logo"
+    android:scaleType="fitStart"
     android:layout_weight="2" />
 
 <LinearLayout

@@ -2,10 +2,12 @@ package com.udiboy.warzone.game;
 
 import android.app.Activity;
 import android.content.Intent;;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 public class SplashActivity extends Activity {
 
@@ -15,6 +17,17 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus){
+        if(hasFocus){
+            ImageView splash_logo = (ImageView) findViewById(R.id.splash_logo);
+            splash_logo.setBackgroundResource(R.drawable.splash_logo);
+
+            ((AnimationDrawable) splash_logo.getBackground()).start();
+        }
+
+        super.onWindowFocusChanged(hasFocus);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
