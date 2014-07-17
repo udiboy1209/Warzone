@@ -16,5 +16,6 @@ TODO
 ====
 
  * Write a better missile generation algorithm
- * Use more realistic explosion animation
  * Create stickman_hit animation, and improve animation of being thrown away
+ * Add music in the game
+ * Add slide feature
