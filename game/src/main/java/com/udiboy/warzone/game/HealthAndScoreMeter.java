@@ -48,17 +48,18 @@ public class HealthAndScoreMeter {
         Paint paint = new Paint();
         paint.setARGB(0xff, 0x99, 0xbb, 0xbb);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawRect(screen_width *0.6f, screen_height *0.1f, screen_width *0.6f + getDisplayedHealth()* screen_width *0.003f, screen_height *0.15f, paint);
+        canvas.drawRect(screen_width *0.6f, screen_height *0.12f, screen_width *0.6f + getDisplayedHealth()* screen_width *0.003f, screen_height *0.17f, paint);
 
         //Draw outer border for meter
         paint.setARGB(0xff, 0x22, 0xbb, 0xbb);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth((float) (0.005 * screen_width));
-        canvas.drawRect(screen_width * 0.6f, screen_height * 0.1f, screen_width * 0.9f, screen_height * 0.15f, paint);
+        canvas.drawRect(screen_width * 0.6f, screen_height * 0.12f, screen_width * 0.9f, screen_height * 0.17f, paint);
 
         //Draw score text
         paint.setARGB(255, 70, 200, 200);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawText(String.valueOf(Math.round(score)), screen_width * 0.1f, screen_height * 0.1f, paint);
+        paint.setTextSize(screen_height * 0.05f);
+        canvas.drawText("Score: "+String.valueOf(Math.round(score)), screen_width * 0.6f, screen_height * 0.1f, paint);
     }
 }
