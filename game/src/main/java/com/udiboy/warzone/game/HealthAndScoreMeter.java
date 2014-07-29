@@ -15,8 +15,8 @@ public class HealthAndScoreMeter {
         this.screen_height = screenHeight;
     }
 
-    public float getScore() {
-        return score;
+    public int getScore() {
+        return Math.round(score);
     }
 
     public float getHealth() {

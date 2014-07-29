@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.udiboy.warzone.game.DisplayPanel
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/display"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/game_over_layout"
+        android:gravity="center_horizontal"
+        android:background="@color/black_overlay"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:src="@drawable/game_over"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Your Score: "
+            android:id="@+id/final_score"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textIsSelectable="false"
+            android:textSize="20dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/replay"
+            android:layout_weight="1"
+            android:src="@drawable/replay"
+            android:background="@drawable/splash_button_back"
+            android:layout_margin="15dp"
+            android:onClick="replay" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/main_menu"
+            android:layout_weight="1"
+            android:src="@drawable/main_menu"
+            android:background="@drawable/splash_button_back"
+            android:layout_margin="15dp"
+            android:onClick="mainMenu" />
+    </LinearLayout>
+
+</FrameLayout>

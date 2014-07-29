@@ -9,10 +9,13 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.TextView;
 
 public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
     DisplayThread thread;
@@ -22,6 +25,8 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
     SensorManager manager;
     Sensor accelerometer;
     Bitmap background;
+    View game_over;
+    TextView final_score;
 
     float character_movement = 0;
 
@@ -41,8 +46,8 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
                             STATE_GAME_PAUSED = 2;
     int state;
 
-    public DisplayPanel(Context context) {
-        super(context);
+    public DisplayPanel(Context context, AttributeSet attrs) {
+        super(context, attrs);
         getHolder().addCallback(this);
         setFocusable(true);
         setWillNotDraw(false);
@@ -137,7 +142,15 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
 
                 character_movement =0;
                 break;
-            case STATE_GAME_OVER : thread.setRunning(false);
+            case STATE_GAME_OVER :
+                game_over.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        final_score.setText("Your Score: "+health_and_score.getScore());
+                        game_over.setVisibility(View.VISIBLE);
+                    }
+                });
+                thread.setRunning(false);
                 break;
         }
     }
@@ -192,5 +205,10 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
                 return false;
         }
         return true;
+    }
+
+    public void setViews(View tv, View gol){
+        final_score=(TextView)tv;
+        game_over =gol;
     }
 }
