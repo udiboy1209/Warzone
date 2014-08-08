@@ -199,6 +199,17 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
                     if(swipe_gesture_start>me.getY()){
                         character.jump();
                     }
+                } else {
+                    synchronized (thread){
+                        if(state==STATE_GAME_RUNNING){
+                            thread.setPaused(true);
+                            state=STATE_GAME_PAUSED;
+                        } else if (state==STATE_GAME_PAUSED){
+                            thread.setPaused(false);
+                            thread.notify();
+                            state=STATE_GAME_RUNNING;
+                        }
+                    }
                 }
                 break;
             default:
