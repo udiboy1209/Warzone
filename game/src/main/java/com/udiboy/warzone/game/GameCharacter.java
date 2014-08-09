@@ -10,6 +10,7 @@ public class GameCharacter {
     public static final int STATE_JUMPING = 0;
     public static final int STATE_RUNNING = 1;
     public static final int STATE_STANDING = 2;
+    public static final int STATE_SLIDING = 3;
 
     float target_x,
         x,
@@ -22,21 +23,25 @@ public class GameCharacter {
 
     int ground_level,
         sprite_offset = 0,
-        state = STATE_STANDING;
+        state = STATE_STANDING,
 
-    int[] width = new int[3],
-        height = new int[3];//size should match no. of states
+        max_sliding_update_skips=15,
+        sliding_updates_skipped=0;
+
+    int[] width = new int[4],
+        height = new int[4];//size should match no. of states
 
     public static int NUM_FRAMES = 9;
             //FRAME_REPEAT_NO = 1;
     int frame_width=0;
     boolean direction = true;//true is to right, false is to left
-    Bitmap running_bitmap, standing_bitmap, jumping_bitmap;
+    Bitmap running_bitmap, standing_bitmap, jumping_bitmap, sliding_bitmap;
 
-    public GameCharacter(Bitmap running_bitmap, Bitmap standing_bitmap, Bitmap jumping_bitmap){
+    public GameCharacter(Bitmap running_bitmap, Bitmap standing_bitmap, Bitmap jumping_bitmap, Bitmap sliding_bitmap){
         this.running_bitmap = running_bitmap;
         this.standing_bitmap = standing_bitmap;
         this.jumping_bitmap = jumping_bitmap;
+        this.sliding_bitmap = sliding_bitmap;
     }
 
     public void setDimensions(int height_standing, int ground_level){
@@ -44,10 +49,13 @@ public class GameCharacter {
         float height_scale_factor = (float)height_standing/standing_bitmap.getHeight();
         height[STATE_RUNNING] = (int)(running_bitmap.getHeight()*height_scale_factor);
         height[STATE_JUMPING] = (int)(jumping_bitmap.getHeight()*height_scale_factor);
+        height[STATE_SLIDING] = (int)(sliding_bitmap.getHeight()*height_scale_factor);
 
         width[STATE_RUNNING] = (running_bitmap.getWidth()*height[STATE_RUNNING])/(NUM_FRAMES* running_bitmap.getHeight());
         width[STATE_STANDING] = (standing_bitmap.getWidth()*height[STATE_STANDING])/standing_bitmap.getHeight();
         width[STATE_JUMPING] = (jumping_bitmap.getWidth()*height[STATE_JUMPING])/jumping_bitmap.getHeight();
+        width[STATE_SLIDING] = (sliding_bitmap.getWidth()*height[STATE_SLIDING])/sliding_bitmap.getHeight();
+
         frame_width = running_bitmap.getWidth()/NUM_FRAMES;
         this.ground_level=ground_level;
         INITIAL_VELOCITY = -(float)Math.sqrt((double)2*GRAVITY*height[STATE_STANDING]);
@@ -61,6 +69,7 @@ public class GameCharacter {
     public void draw(Canvas canvas){
         //Log.i("GameCharacter","temp sprite offset: "+temp_sprite_offset);
         Matrix m = new Matrix();
+        Bitmap flipped_bitmap;
         m.setScale(direction ? 1.0f : -1.0f, 1.0f);
 
         switch(state){
@@ -73,7 +82,12 @@ public class GameCharacter {
                 canvas.drawBitmap(Bitmap.createScaledBitmap(standing_bitmap, getWidth(), getHeight(), true), Math.round(x)-getWidth()/2, Math.round(y)-getHeight(), null);
                 break;
             case STATE_JUMPING:
-                Bitmap flipped_bitmap = Bitmap.createBitmap(jumping_bitmap,0,0,jumping_bitmap.getWidth(),jumping_bitmap.getHeight(),m,true);
+                flipped_bitmap = Bitmap.createBitmap(jumping_bitmap,0,0,jumping_bitmap.getWidth(),jumping_bitmap.getHeight(),m,true);
+
+                canvas.drawBitmap(Bitmap.createScaledBitmap(flipped_bitmap, getWidth(), getHeight(), true), Math.round(x) - getWidth() / 2, Math.round(y)-getHeight(), null);
+                break;
+            case STATE_SLIDING:
+                flipped_bitmap = Bitmap.createBitmap(sliding_bitmap,0,0,sliding_bitmap.getWidth(),sliding_bitmap.getHeight(),m,true);
 
                 canvas.drawBitmap(Bitmap.createScaledBitmap(flipped_bitmap, getWidth(), getHeight(), true), Math.round(x) - getWidth() / 2, Math.round(y)-getHeight(), null);
                 break;
@@ -95,16 +109,29 @@ public class GameCharacter {
                 state=STATE_RUNNING;
                 y=ground_level;
             }
+        } else if(state==STATE_SLIDING){
+            if(sliding_updates_skipped < max_sliding_update_skips)
+                sliding_updates_skipped++;
+            else {
+                state=STATE_RUNNING;
+                sliding_updates_skipped=0;
+            }
         }
 
         direction = d>0;
-        if(state!=STATE_JUMPING) state = (int)d!=0?STATE_RUNNING:STATE_STANDING;
+        if(state!=STATE_JUMPING && state!=STATE_SLIDING) state = (int)d!=0?STATE_RUNNING:STATE_STANDING;
     }
 
     public void jump(){
         if(state != STATE_JUMPING){
             state = STATE_JUMPING;
             velocity_y = INITIAL_VELOCITY;
+        }
+    }
+
+    public void slide(){
+        if(state != STATE_JUMPING){
+            state=STATE_SLIDING;
         }
     }
 

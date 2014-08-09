@@ -61,7 +61,8 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
 
         character = new GameCharacter(BitmapFactory.decodeResource(context.getResources(), R.drawable.stickman,decodeOpts),
                 BitmapFactory.decodeResource(getResources(), R.drawable.stickman_standing,decodeOpts),
-                BitmapFactory.decodeResource(getResources(), R.drawable.stickman_jumping,decodeOpts));
+                BitmapFactory.decodeResource(getResources(), R.drawable.stickman_jumping,decodeOpts),
+                BitmapFactory.decodeResource(getResources(), R.drawable.stickman_sliding,decodeOpts));
         missile_renderer = new MissileRenderer(BitmapFactory.decodeResource(getResources(), R.drawable.missile,decodeOpts),
                 BitmapFactory.decodeResource(getResources(), R.drawable.missile_blink,decodeOpts),
                 BitmapFactory.decodeResource(getResources(), R.drawable.missile_explode,decodeOpts));
@@ -198,6 +199,8 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
                 if(Math.abs(swipe_gesture_start-me.getY())>screen_height/5){
                     if(swipe_gesture_start>me.getY()){
                         character.jump();
+                    } else {
+                        character.slide();
                     }
                 }
                 break;
