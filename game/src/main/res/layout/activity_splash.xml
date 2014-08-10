@@ -19,11 +19,11 @@
     android:layout_width="0dp"
     android:layout_height="fill_parent"
     android:gravity="center"
-    android:layout_weight="1">
+    android:layout_weight="1"
+    android:weightSum="6">
 
     <ImageButton
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Start Game"
         android:id="@+id/start_game"
         style="@style/ButtonSplash"
@@ -33,7 +33,6 @@
     <ImageButton
         style="@style/ButtonSplash"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Start Game"
         android:id="@+id/highscore"
         android:src="@drawable/splash_highscore" />
@@ -41,7 +40,6 @@
     <ImageButton
         style="@style/ButtonSplash"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Start Game"
         android:id="@+id/how_to_play"
         android:src="@drawable/splash_how_to_play" />
@@ -49,7 +47,6 @@
     <ImageButton
         style="@style/ButtonSplash"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Start Game"
         android:src="@drawable/splash_credits"
         android:id="@+id/credits" />
