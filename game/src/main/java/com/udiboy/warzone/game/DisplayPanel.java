@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,9 +25,10 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
     HealthAndScoreMeter health_and_score;
     SensorManager manager;
     Sensor accelerometer;
-    Bitmap background;
-    View game_over;
-    TextView final_score;
+    Bitmap background, button_pause;
+    View game_over, game_paused;
+    TextView final_score, current_score;
+    Rect pause_button_rect;
 
     float character_movement = 0;
 
@@ -98,6 +100,9 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         decodeOpts.inDither = true;
 
         background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.back, decodeOpts), getWidth(), getHeight(), true);
+        button_pause = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.button_pause, decodeOpts), getHeight()/8, getHeight()/8, true);
+
+        pause_button_rect = new Rect(0,0,button_pause.getWidth(),button_pause.getHeight());
 
         thread.setRunning(true);
         state = STATE_GAME_COUNTDOWN;
@@ -160,6 +165,8 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         if(canvas==null) return;
 
         canvas.drawBitmap(background,0,0,null);
+        canvas.drawBitmap(button_pause,0,0, null);
+
         character.draw(canvas);
 
         if(state != STATE_GAME_COUNTDOWN)
@@ -202,6 +209,18 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
                     } else {
                         character.slide();
                     }
+                } else if(state==STATE_GAME_RUNNING && pause_button_rect.contains(Math.round(me.getX()), Math.round(me.getY()))){
+                    synchronized (thread){
+                        thread.setPaused(true);
+                        game_paused.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                current_score.setText("Your Score: "+health_and_score.getScore());
+                                game_paused.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        state=STATE_GAME_PAUSED;
+                    }
                 }
                 break;
             default:
@@ -210,8 +229,10 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         return true;
     }
 
-    public void setViews(View tv, View gol){
-        final_score=(TextView)tv;
+    public void setViews(View fs, View cs, View gol, View gpl){
+        final_score=(TextView)fs;
+        current_score=(TextView)cs;
+        game_paused=gpl;
         game_over =gol;
     }
 }

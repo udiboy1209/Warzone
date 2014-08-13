@@ -5,7 +5,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class DisplayThread extends Thread{
-    boolean running;
+    boolean running,
+            paused;
     SurfaceHolder holder;
     DisplayPanel panel;
 
@@ -31,6 +32,12 @@ public class DisplayThread extends Thread{
         while(running){
             canvas = null;
             try{
+                while(paused){
+                    synchronized(this){
+                        try{ wait();}
+                        catch(InterruptedException e) { }
+                    }
+                }
                 canvas = holder.lockCanvas();
                 synchronized (holder){
                     begin_time = System.currentTimeMillis();
@@ -65,5 +72,9 @@ public class DisplayThread extends Thread{
 
     public void setRunning(boolean running){
         this.running = running;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }
