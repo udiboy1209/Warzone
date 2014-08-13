@@ -99,9 +99,9 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         decodeOpts.inDither = true;
 
         background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.back, decodeOpts), getWidth(), getHeight(), true);
-        button_pause = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.button_pause, decodeOpts), getHeight()/10, getHeight()/10, true);
+        button_pause = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.button_pause, decodeOpts), getHeight()/8, getHeight()/8, true);
 
-        pause_button_rect = new Rect(getWidth()-button_pause.getWidth(),0,getWidth(),button_pause.getHeight());
+        pause_button_rect = new Rect(0,0,button_pause.getWidth(),button_pause.getHeight());
 
         thread.setRunning(true);
         state = STATE_GAME_COUNTDOWN;
@@ -164,7 +164,7 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         if(canvas==null) return;
 
         canvas.drawBitmap(background,0,0,null);
-        canvas.drawBitmap(button_pause,getWidth()-button_pause.getWidth(), 0, null);
+        canvas.drawBitmap(button_pause,0,0, null);
 
         character.draw(canvas);
 
