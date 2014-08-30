@@ -3,6 +3,8 @@ package com.udiboy.warzone.game;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
@@ -19,6 +21,19 @@ public class GamePlayActivity extends Activity{
 
         getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
+
+    @Override
+    public void onPause(){
+        display.exit_action=DisplayPanel.ACTION_PAUSE;
+        super.onPause();
+    }
+
+    /*@Override
+    public void onStop(){
+        Log.d("Warzone","onStop called");
+        display.exit_action=DisplayPanel.ACTION_QUIT;
+        super.onStop();
+    }*/
 
     public void mainMenu(View v){
         synchronized (display.thread){

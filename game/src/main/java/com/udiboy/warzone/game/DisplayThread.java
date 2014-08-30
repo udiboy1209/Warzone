@@ -52,12 +52,12 @@ public class DisplayThread extends Thread{
                     if(sleep_time > 0){
                         try{
                             Thread.sleep(sleep_time);
-                            Log.d("Thread","Sleeping for:"+sleep_time+" ms");
+                            Log.v("Thread","Sleeping for:"+sleep_time+" ms");
                         } catch(InterruptedException e){}
                     }
 
                     while (sleep_time < 0 && frames_skipped < MAX_FRAME_SKIPS){
-                        Log.w("Thread","Skipped frame! sleepTime: "+sleep_time);
+                        Log.v("Thread","Skipped frame! sleepTime: "+sleep_time);
                         this.panel.update();
                         sleep_time += FRAME_PERIOD;
                         frames_skipped++;

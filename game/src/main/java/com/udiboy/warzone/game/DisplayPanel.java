@@ -46,7 +46,12 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
                             STATE_GAME_RUNNING = 0,
                             STATE_GAME_OVER = 1,
                             STATE_GAME_PAUSED = 2;
-    int state;
+
+    public static final int ACTION_QUIT = 0,
+                            ACTION_PAUSE = 1;
+
+    int state,
+        exit_action=ACTION_QUIT;
 
     public DisplayPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -82,39 +87,68 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
     public void surfaceCreated(SurfaceHolder arg0) {
         manager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
 
-        screen_height = getHeight();
-        screen_width = getWidth();
-        ground_level =(screen_height *99)/100;
-        int charHeight = (screen_height *2)/10;
-        character.setDimensions(charHeight, ground_level);
-        character.max_x = screen_width;
+        if(exit_action == ACTION_QUIT){
+            screen_height = getHeight();
+            screen_width = getWidth();
+            ground_level =(screen_height *99)/100;
+            int charHeight = (screen_height *2)/10;
+            character.setDimensions(charHeight, ground_level);
+            character.max_x = screen_width;
 
-        character.setLocation(screen_width/2, ground_level);
+            character.setLocation(screen_width/2, ground_level);
 
-        missile_renderer.setScreenDimensions(screen_width, screen_height, ground_level);
-        missile_renderer.setDimensions(charHeight);
+            missile_renderer.setScreenDimensions(screen_width, screen_height, ground_level);
+            missile_renderer.setDimensions(charHeight);
 
-        health_and_score.setScreenDimensions(screen_width, screen_height);
+            health_and_score.setScreenDimensions(screen_width, screen_height);
 
-        BitmapFactory.Options decodeOpts = new BitmapFactory.Options();
-        decodeOpts.inDither = true;
+            BitmapFactory.Options decodeOpts = new BitmapFactory.Options();
+            decodeOpts.inDither = true;
 
-        background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.back, decodeOpts), getWidth(), getHeight(), true);
-        button_pause = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.button_pause, decodeOpts), getHeight()/8, getHeight()/8, true);
+            background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.back, decodeOpts), getWidth(), getHeight(), true);
+            button_pause = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.button_pause, decodeOpts), getHeight()/8, getHeight()/8, true);
 
-        pause_button_rect = new Rect(0,0,button_pause.getWidth(),button_pause.getHeight());
+            pause_button_rect = new Rect(0,0,button_pause.getWidth(),button_pause.getHeight());
 
-        thread.setRunning(true);
-        state = STATE_GAME_COUNTDOWN;
-        thread.start();
+            thread.setPaused(false);
+            thread.setRunning(true);
+            state = STATE_GAME_COUNTDOWN;
+            thread.start();
+        } else {
+            Canvas canvas = getHolder().lockCanvas();
+            synchronized (getHolder()){
+                render(canvas);
+            }
+            getHolder().unlockCanvasAndPost(canvas);
+            state = STATE_GAME_PAUSED;
+        }
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder arg0) {
         Log.d("Panel","Destroying surface");
+        Log.d("Panel","exit_action = "+(exit_action==ACTION_PAUSE?"pause":"quit"));
         try{
-            thread.setRunning(false);
-            thread.join();
+            if(exit_action == ACTION_QUIT){
+                synchronized (thread){
+                    thread.setPaused(false);
+                    thread.notify();
+                }
+                thread.setRunning(false);
+                thread.join();
+            } else {
+                synchronized (thread){
+                    thread.setPaused(true);
+                    game_paused.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            current_score.setText("Your Score: "+health_and_score.getScore());
+                            game_paused.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    state=STATE_GAME_PAUSED;
+                }
+            }
         } catch(InterruptedException e){
             Log.d("Panel","Caught InterruptedException while destroying surface : "+e.getMessage());
         }
@@ -146,7 +180,7 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
 
                 health_and_score.update(missile_renderer.checkCollisionWithCharacter(character.getRect()) * -25 + 0.01f, 4 * Math.abs(character_movement) + 1);
 
-                character_movement =0;
+                character_movement = 0;
                 break;
             case STATE_GAME_OVER :
                 game_over.post(new Runnable() {
