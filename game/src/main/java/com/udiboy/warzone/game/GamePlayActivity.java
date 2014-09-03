@@ -40,13 +40,19 @@ public class GamePlayActivity extends Activity{
             display.thread.setPaused(false);
             display.thread.notify();
         }
+        Intent i = new Intent();
+        i.putExtra("score",display.health_and_score.getScore());
+        i.putExtra("replay",false);
+        setResult(RESULT_OK, i);
         finish();
     }
 
     public void replay(View v){
-        Intent i = getIntent();
+        Intent i = new Intent();
+        i.putExtra("score",display.health_and_score.getScore());
+        i.putExtra("replay",true);
+        setResult(RESULT_OK, i);
         finish();
-        startActivity(i);
     }
 
     public void resume(View v){
