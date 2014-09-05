@@ -1,6 +1,7 @@
 package com.udiboy.warzone.game;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;;
 import android.graphics.drawable.AnimationDrawable;
@@ -20,11 +21,14 @@ import java.util.ArrayList;
 
 public class SplashActivity extends Activity {
     ArrayList<Integer> highscores = new ArrayList<Integer>(10);
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        fragmentManager = getFragmentManager();
 
         try{
             BufferedReader in = new BufferedReader(new InputStreamReader(openFileInput("highscores")));
@@ -85,10 +89,17 @@ public class SplashActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onClick(View v){
+    public void startGame(View v){
         Intent i = new Intent();
         i.setClass(this, GamePlayActivity.class);
         startActivityForResult(i, 1);
+    }
+
+    public void highscores(View v){
+        Intent i = new Intent();
+        i.setClass(this, HighscoreActivity.class);
+        i.putExtra("highscores",highscores);
+        startActivity(i);
     }
 
     public void onActivityResult(int reqCode, int resCode, Intent data){

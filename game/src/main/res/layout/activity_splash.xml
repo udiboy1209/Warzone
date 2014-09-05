@@ -27,7 +27,7 @@
         android:text="Start Game"
         android:id="@+id/start_game"
         style="@style/ButtonSplash"
-        android:onClick="onClick"
+        android:onClick="startGame"
         android:src="@drawable/splash_start_game"/>
 
     <ImageButton
@@ -35,7 +35,8 @@
         android:layout_width="wrap_content"
         android:text="Start Game"
         android:id="@+id/highscore"
-        android:src="@drawable/splash_highscore" />
+        android:src="@drawable/splash_highscore"
+        android:onClick="highscores" />
 
     <ImageButton
         style="@style/ButtonSplash"
