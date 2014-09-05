@@ -1,9 +1,8 @@
 package com.udiboy.warzone.game;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,14 +20,11 @@ import java.util.ArrayList;
 
 public class SplashActivity extends Activity {
     ArrayList<Integer> highscores = new ArrayList<Integer>(10);
-    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        fragmentManager = getFragmentManager();
 
         try{
             BufferedReader in = new BufferedReader(new InputStreamReader(openFileInput("highscores")));
@@ -83,10 +79,7 @@ public class SplashActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     public void startGame(View v){
