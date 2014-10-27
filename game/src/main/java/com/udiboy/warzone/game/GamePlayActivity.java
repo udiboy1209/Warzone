@@ -2,15 +2,16 @@ package com.udiboy.warzone.game;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
-import android.widget.LinearLayout;
 
 public class GamePlayActivity extends Activity{
     DisplayPanel display;
+    MediaPlayer bg_music;
+    MediaPlayer end_music;
+
     @Override
     public void onCreate(Bundle icicle){
         super.onCreate(icicle);
@@ -20,14 +21,31 @@ public class GamePlayActivity extends Activity{
         display.setViews(findViewById(R.id.final_score), findViewById(R.id.current_score), findViewById(R.id.game_over_layout), findViewById(R.id.game_paused_layout));
 
         getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        bg_music=MediaPlayer.create(this, R.raw.music_game);
+        bg_music.setLooping(true);
+        bg_music.setVolume(1.0f, 1.0f);
+        end_music=MediaPlayer.create(this, R.raw.music_end);
+        end_music.setLooping(true);
+        end_music.setVolume(1.0f, 1.0f);
     }
 
     @Override
     public void onPause(){
         display.exit_action=DisplayPanel.ACTION_PAUSE;
+        if(bg_music.isPlaying()) bg_music.pause();
+        if(end_music.isPlaying()) end_music.pause();
         super.onPause();
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(display.state==DisplayPanel.STATE_GAME_OVER)
+            end_music.start();
+        else
+            bg_music.start();
+    }
     /*@Override
     public void onStop(){
         Log.d("Warzone","onStop called");

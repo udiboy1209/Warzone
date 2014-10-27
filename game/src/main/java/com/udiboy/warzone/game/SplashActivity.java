@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 public class SplashActivity extends Activity {
     ArrayList<Integer> highscores = new ArrayList<Integer>(10);
+    MediaPlayer bg_music;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,22 @@ public class SplashActivity extends Activity {
                 highscores.add(0);
         }
         catch (IOException ie){}
+
+        bg_music =MediaPlayer.create(this,R.raw.music_splash);
+        bg_music.setLooping(true);
+        bg_music.setVolume(1.0f, 1.0f);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        bg_music.start();
+    }
+
+    @Override
+    public void onPause(){
+        bg_music.pause();
+        super.onPause();
     }
 
     @Override

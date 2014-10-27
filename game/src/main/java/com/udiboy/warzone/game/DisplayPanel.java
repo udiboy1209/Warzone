@@ -188,6 +188,8 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
                     public void run() {
                         final_score.setText("Your Score: "+health_and_score.getScore());
                         game_over.setVisibility(View.VISIBLE);
+                        ((GamePlayActivity)getContext()).bg_music.reset();
+                        ((GamePlayActivity)getContext()).end_music.start();
                     }
                 });
                 thread.setRunning(false);
