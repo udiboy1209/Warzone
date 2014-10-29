@@ -1,15 +1,16 @@
 package com.udiboy.warzone.game;
 
-import java.util.ArrayList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class MissileRenderer {
     Bitmap bitmap_fall, bitmap_blink, bitmap_explode;
     ArrayList<Missile> missiles;
-    int width, height, width_explode, height_explode, screen_width, screen_height, char_height, frame_width;
+    int width, height, width_explode, height_explode, screen_width, screen_height, char_height;
     public static int NUM_EXPLODE_FRAMES=18;
     float max_missile_per_update = 1f,
           missile_count_update_rate = 0.08f,
@@ -116,8 +117,9 @@ public class MissileRenderer {
             case Missile.STATE_EXPLODING:
                 int x=missile.getX()+(width-width_explode)/2,
                     y=missile.getY()+2*height/3-height_explode/2;
-                Bitmap cropped_bitmap = Bitmap.createBitmap(bitmap_explode,missile.explode_count * frame_width, 0, bitmap_explode.getWidth()/NUM_EXPLODE_FRAMES, bitmap_explode.getHeight(),null,true);
-                canvas.drawBitmap(Bitmap.createScaledBitmap(cropped_bitmap,width_explode,height_explode,false), x, y, null);
+                Bitmap cropped_bitmap = Bitmap.createBitmap(bitmap_explode,missile.explode_count * width_explode, 0, width_explode, height_explode,null,true);
+                canvas.drawBitmap(cropped_bitmap, x, y, null);
+                cropped_bitmap.recycle();
                 break;
             }
         }
@@ -129,9 +131,9 @@ public class MissileRenderer {
         this.char_height =char_height;
         this.height_explode = 2*char_height/3;
         this.width_explode = this.height_explode*bitmap_explode.getWidth()/NUM_EXPLODE_FRAMES/bitmap_explode.getHeight();
-        this.frame_width=bitmap_explode.getWidth()/NUM_EXPLODE_FRAMES;
         bitmap_fall=Bitmap.createScaledBitmap(bitmap_fall, width, height, false);
         bitmap_blink=Bitmap.createScaledBitmap(bitmap_blink, width, height, false);
+        bitmap_explode=Bitmap.createScaledBitmap(bitmap_explode,width_explode*NUM_EXPLODE_FRAMES, height_explode, true);
         //Log.d("Missile","dimen: "+width+"x"+height);
     }
 

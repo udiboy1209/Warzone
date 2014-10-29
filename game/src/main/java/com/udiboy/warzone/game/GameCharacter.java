@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
-import android.util.Log;
 
 public class GameCharacter {
     public static final int STATE_JUMPING = 0;
@@ -45,20 +44,32 @@ public class GameCharacter {
     }
 
     public void setDimensions(int height_standing, int ground_level){
-        height[STATE_STANDING] = height_standing;
         float height_scale_factor = (float)height_standing/standing_bitmap.getHeight();
-        height[STATE_RUNNING] = (int)(running_bitmap.getHeight()*height_scale_factor);
-        height[STATE_JUMPING] = (int)(jumping_bitmap.getHeight()*height_scale_factor);
-        height[STATE_SLIDING] = (int)(sliding_bitmap.getHeight()*height_scale_factor);
+        Matrix m = new Matrix();
+        m.postScale(height_scale_factor,height_scale_factor);
 
-        width[STATE_RUNNING] = (running_bitmap.getWidth()*height[STATE_RUNNING])/(NUM_FRAMES* running_bitmap.getHeight());
-        width[STATE_STANDING] = (standing_bitmap.getWidth()*height[STATE_STANDING])/standing_bitmap.getHeight();
-        width[STATE_JUMPING] = (jumping_bitmap.getWidth()*height[STATE_JUMPING])/jumping_bitmap.getHeight();
-        width[STATE_SLIDING] = (sliding_bitmap.getWidth()*height[STATE_SLIDING])/sliding_bitmap.getHeight();
+        standing_bitmap = scaleBitmap(standing_bitmap,m);
+        running_bitmap = scaleBitmap(running_bitmap,m);
+        jumping_bitmap = scaleBitmap(jumping_bitmap,m);
+        sliding_bitmap = scaleBitmap(sliding_bitmap,m);
+
+        height[STATE_STANDING] = height_standing;
+        height[STATE_RUNNING] = running_bitmap.getHeight();
+        height[STATE_JUMPING] = jumping_bitmap.getHeight();
+        height[STATE_SLIDING] = sliding_bitmap.getHeight();
+
+        width[STATE_RUNNING] = running_bitmap.getWidth()/NUM_FRAMES;
+        width[STATE_STANDING] = standing_bitmap.getWidth();
+        width[STATE_JUMPING] = jumping_bitmap.getWidth();
+        width[STATE_SLIDING] = sliding_bitmap.getWidth();
 
         frame_width = running_bitmap.getWidth()/NUM_FRAMES;
         this.ground_level=ground_level;
         INITIAL_VELOCITY = -(float)Math.sqrt((double)2*GRAVITY*height[STATE_STANDING]);
+    }
+
+    private Bitmap scaleBitmap(Bitmap bmp, Matrix m){
+        return Bitmap.createBitmap(bmp,0,0,bmp.getWidth(),bmp.getHeight(),m,true);
     }
 
     public void setLocation(int x, int y){
@@ -69,27 +80,25 @@ public class GameCharacter {
     public void draw(Canvas canvas){
         //Log.i("GameCharacter","temp sprite offset: "+temp_sprite_offset);
         Matrix m = new Matrix();
-        Bitmap flipped_bitmap;
-        m.setScale(direction ? 1.0f : -1.0f, 1.0f);
+        m.postScale(direction ? 1.0f : -1.0f, 1.0f, getWidth() / 2, 0);
+        m.postTranslate(Math.round(x)-getWidth()/2,Math.round(y)-getHeight());
 
         switch(state){
             case STATE_RUNNING:
-                Bitmap cropped_bitmap = Bitmap.createBitmap(running_bitmap,sprite_offset * frame_width, 0, frame_width, running_bitmap.getHeight(),m,true);
+                Bitmap cropped_bitmap = Bitmap.createBitmap(running_bitmap,sprite_offset * frame_width, 0, frame_width, running_bitmap.getHeight(),null,true);
 
-                canvas.drawBitmap(Bitmap.createScaledBitmap(cropped_bitmap, getWidth(), getHeight(), true),Math.round(x)-getWidth()/2 ,Math.round(y)-getHeight() ,null);
+                canvas.drawBitmap(cropped_bitmap, m,null);
+
+                cropped_bitmap.recycle();
                 break;
             case STATE_STANDING:
-                canvas.drawBitmap(Bitmap.createScaledBitmap(standing_bitmap, getWidth(), getHeight(), true), Math.round(x)-getWidth()/2, Math.round(y)-getHeight(), null);
+                canvas.drawBitmap(standing_bitmap, m, null);
                 break;
             case STATE_JUMPING:
-                flipped_bitmap = Bitmap.createBitmap(jumping_bitmap,0,0,jumping_bitmap.getWidth(),jumping_bitmap.getHeight(),m,true);
-
-                canvas.drawBitmap(Bitmap.createScaledBitmap(flipped_bitmap, getWidth(), getHeight(), true), Math.round(x) - getWidth() / 2, Math.round(y)-getHeight(), null);
+                canvas.drawBitmap(jumping_bitmap, m, null);
                 break;
             case STATE_SLIDING:
-                flipped_bitmap = Bitmap.createBitmap(sliding_bitmap,0,0,sliding_bitmap.getWidth(),sliding_bitmap.getHeight(),m,true);
-
-                canvas.drawBitmap(Bitmap.createScaledBitmap(flipped_bitmap, getWidth(), getHeight(), true), Math.round(x) - getWidth() / 2, Math.round(y)-getHeight(), null);
+                canvas.drawBitmap(sliding_bitmap, m, null);
                 break;
         }
     }
