@@ -3,7 +3,6 @@ package com.udiboy.warzone.game;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,10 +17,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SplashActivity extends Activity {
     ArrayList<Integer> highscores = new ArrayList<Integer>(10);
     MediaPlayer bg_music;
+    int[] splash_anim_frames={R.drawable.splash_anim0,R.drawable.splash_anim1,R.drawable.splash_anim2,R.drawable.splash_anim3,R.drawable.splash_anim4,R.drawable.splash_anim5,R.drawable.splash_anim6,R.drawable.splash_anim7,R.drawable.splash_anim8,R.drawable.splash_anim9,R.drawable.splash_anim10};
+    int splash_anim_frame_no=0;
+    ImageView splash_logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,8 @@ public class SplashActivity extends Activity {
         bg_music =MediaPlayer.create(this,R.raw.music_splash);
         bg_music.setLooping(true);
         bg_music.setVolume(1.0f, 1.0f);
+
+        splash_logo = (ImageView) findViewById(R.id.splash_logo);
     }
 
     @Override
@@ -73,12 +79,24 @@ public class SplashActivity extends Activity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus){
-        if(hasFocus){
-            ImageView splash_logo = (ImageView) findViewById(R.id.splash_logo);
-            splash_logo.setBackgroundResource(R.drawable.splash_logo);
-
-            ((AnimationDrawable) splash_logo.getBackground()).start();
-        }
+        final Timer splash_anim = new Timer();
+        splash_anim.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                    splash_logo.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(splash_anim_frame_no < splash_anim_frames.length) {
+                                splash_logo.setImageResource(splash_anim_frames[splash_anim_frame_no]);
+                                splash_anim_frame_no++;
+                            } else {
+                                splash_anim.cancel();
+                                splash_anim.purge();
+                            }
+                        }
+                    });
+            }
+        },0,75);
 
         super.onWindowFocusChanged(hasFocus);
     }
