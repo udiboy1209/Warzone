@@ -8,10 +8,15 @@ It has a stickman as the main character. He is in the middle of a war zone where
 Project Details
 ===============
 
-The game is in its early stages. The code is completely uncommented and may be very difficult to understand (In my defence, I didn't know about github or opensource development when I started making this game! So i didn't see the need for comments).
+The game is in its early stages. The code is completely uncommented and may be very difficult to understand. I may comment it sometime in the future :P . Till then you can mail me with questions. 
 
 Changes
 ========
+v0.3 :
+ * highscore save feature
+ * background music
+ * bug fixes
+
 v0.2 :
  * pause, and game over features
  * slide (swipe down)
@@ -24,7 +29,9 @@ v0.1 :
 TODO
 ====
 
- * Write a better missile generation algorithm
- * Create stickman_hit animation, and improve animation of being thrown away
- * Add music in the game
- * Add slide feature
+- [ ] Write a better missile generation algorithm
+- [ ] Create stickman_hit animation, and improve animation of being thrown away
+- [x] ~~Add music in the game~~
+- [x] ~~Add slide feature~~
+- [ ] Add powerups in the game
+- [ ] Improve highscore display
