@@ -135,6 +135,7 @@ public class GameCharacter {
         if(state != STATE_JUMPING){
             state = STATE_JUMPING;
             velocity_y = INITIAL_VELOCITY;
+            sliding_updates_skipped=0;
         }
     }
 
