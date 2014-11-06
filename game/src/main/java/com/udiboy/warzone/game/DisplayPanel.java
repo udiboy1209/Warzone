@@ -25,10 +25,10 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
     HealthAndScoreMeter health_and_score;
     SensorManager manager;
     Sensor accelerometer;
-    Bitmap background, button_pause;
+    Bitmap background, button_pause, button_music_on, button_music_off;
     View game_over, game_paused;
     TextView final_score, current_score;
-    Rect pause_button_rect;
+    Rect pause_button_rect, music_button_rect;
 
     float character_movement = 0;
 
@@ -52,6 +52,8 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
 
     int state,
         exit_action=ACTION_QUIT;
+
+    boolean play_music=true;
 
     public DisplayPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -107,8 +109,11 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
 
             background = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.back, decodeOpts), getWidth(), getHeight(), true);
             button_pause = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.button_pause, decodeOpts), getHeight()/8, getHeight()/8, true);
+            button_music_on = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.button_music_on, decodeOpts), getHeight()/8, getHeight()/8, true);
+            button_music_off = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.button_music_off, decodeOpts), getHeight()/8, getHeight()/8, true);
 
             pause_button_rect = new Rect(0,0,button_pause.getWidth(),button_pause.getHeight());
+            music_button_rect = new Rect(button_pause.getWidth(),0,button_pause.getWidth()+button_music_on.getWidth(),button_music_on.getHeight());
 
             thread.setPaused(false);
             thread.setRunning(true);
@@ -202,6 +207,7 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
 
         canvas.drawBitmap(background,0,0,null);
         canvas.drawBitmap(button_pause,0,0, null);
+        canvas.drawBitmap(play_music?button_music_on:button_music_off,music_button_rect.left,music_button_rect.top, null);
 
         character.draw(canvas);
 
@@ -245,17 +251,29 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
                     } else {
                         character.slide();
                     }
-                } else if(state==STATE_GAME_RUNNING && pause_button_rect.contains(Math.round(me.getX()), Math.round(me.getY()))){
-                    synchronized (thread){
-                        thread.setPaused(true);
+                } else if(state==STATE_GAME_RUNNING ){
+                    if(pause_button_rect.contains(Math.round(me.getX()), Math.round(me.getY()))) {
+                        synchronized (thread) {
+                            thread.setPaused(true);
+                            game_paused.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    current_score.setText("Your Score: " + health_and_score.getScore());
+                                    game_paused.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            state = STATE_GAME_PAUSED;
+                        }
+                    } else if(music_button_rect.contains(Math.round(me.getX()), Math.round(me.getY()))){
+                        play_music=!play_music;
+                        Log.d("Panel","Music button pressed");
                         game_paused.post(new Runnable() {
                             @Override
                             public void run() {
-                                current_score.setText("Your Score: "+health_and_score.getScore());
-                                game_paused.setVisibility(View.VISIBLE);
+                                ((GamePlayActivity)getContext()).bg_music.setVolume(play_music?1.0f:0.0f,play_music?1.0f:0.0f);
+                                ((GamePlayActivity)getContext()).end_music.setVolume(play_music?1.0f:0.0f,play_music?1.0f:0.0f);
                             }
                         });
-                        state=STATE_GAME_PAUSED;
                     }
                 }
                 break;
