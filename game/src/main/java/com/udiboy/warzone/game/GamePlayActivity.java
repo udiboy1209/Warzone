@@ -86,4 +86,9 @@ public class GamePlayActivity extends Activity{
     public void onPause(){
         super.onPause();
     }*/
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent i){
+
+    }
 }

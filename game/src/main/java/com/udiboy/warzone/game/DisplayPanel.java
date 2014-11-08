@@ -1,6 +1,7 @@
 package com.udiboy.warzone.game;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -188,13 +189,15 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
                 character_movement = 0;
                 break;
             case STATE_GAME_OVER :
-                game_over.post(new Runnable() {
+                game_paused.post(new Runnable() {
                     @Override
                     public void run() {
-                        final_score.setText("Your Score: "+health_and_score.getScore());
-                        game_over.setVisibility(View.VISIBLE);
-                        ((GamePlayActivity)getContext()).bg_music.reset();
-                        ((GamePlayActivity)getContext()).end_music.start();
+                        Intent i=new Intent();
+                        i.putExtra("score",health_and_score.getScore());
+                        i.setClass(getContext(),HighscoreActivity.class);
+                        i.putExtra("action",HighscoreActivity.ACTION_SAVE);
+                        getContext().startActivity(i);
+                        ((GamePlayActivity)getContext()).finish();
                     }
                 });
                 thread.setRunning(false);

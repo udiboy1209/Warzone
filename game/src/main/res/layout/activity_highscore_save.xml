@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/splash_back"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp"
+    android:weightSum="8"
+    android:gravity="center_vertical"
+    tools:context="com.udiboy.warzone.game.HighscoreActivity">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:src="@drawable/high_score"/>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="3dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:src="@color/divider"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black"
+        android:text="Your Score: "
+        android:id="@+id/final_score"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:textIsSelectable="false"
+        android:textSize="40dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center_vertical">
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Name"
+            android:ems="10"
+            android:id="@+id/highscore_name"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="5"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:src="@drawable/main_menu"
+            android:layout_gravity="center"
+            android:onClick="mainMenu"
+            android:background="@drawable/splash_button_back"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="Save score"
+            android:onClick="save"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/splash_button_back"/>
+    </LinearLayout>
+
+</LinearLayout>
