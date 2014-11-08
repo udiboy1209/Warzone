@@ -3,6 +3,7 @@ package com.udiboy.warzone.game;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,5 +24,9 @@ public class HighscoreActivity extends Activity {
         for(int i=0; i<10; i++){
             ((TextView)(list.getChildAt(i))).setText((i+1)+".) "+highscores.get(i));
         }
+    }
+
+    public void mainMenu(View v){
+        finish();
     }
 }

@@ -1,5 +1,6 @@
 <resources>
 
     <color name="black_overlay">#66000000</color>
+    <color name="divider">#FF333333</color>
 
 </resources>

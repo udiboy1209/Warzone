@@ -1,23 +1,54 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/splash_back"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp"
     tools:context="com.udiboy.warzone.game.HighscoreActivity">
-    <LinearLayout
-        android:id="@+id/highscores"
-        android:layout_height="wrap_content"
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:src="@drawable/high_score"/>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="3dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:src="@color/divider"/>
+
+    <ScrollView android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:padding="5dp">
+        <LinearLayout
+            android:id="@+id/highscores"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <include layout="@layout/highscore_container"/>
+            <include layout="@layout/highscore_container"/>
+            <include layout="@layout/highscore_container"/>
+            <include layout="@layout/highscore_container"/>
+            <include layout="@layout/highscore_container"/>
+            <include layout="@layout/highscore_container"/>
+            <include layout="@layout/highscore_container"/>
+            <include layout="@layout/highscore_container"/>
+            <include layout="@layout/highscore_container"/>
+            <include layout="@layout/highscore_container"/>
+        </LinearLayout>
+    </ScrollView>
+    <ImageButton
         android:layout_width="wrap_content"
-        android:orientation="vertical">
-        <include layout="@layout/highscore_container"/>
-        <include layout="@layout/highscore_container"/>
-        <include layout="@layout/highscore_container"/>
-        <include layout="@layout/highscore_container"/>
-        <include layout="@layout/highscore_container"/>
-        <include layout="@layout/highscore_container"/>
-        <include layout="@layout/highscore_container"/>
-        <include layout="@layout/highscore_container"/>
-        <include layout="@layout/highscore_container"/>
-        <include layout="@layout/highscore_container"/>
-    </LinearLayout>
-</ScrollView>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:src="@drawable/main_menu"
+        android:layout_gravity="center"
+        android:onClick="mainMenu"
+        android:background="@drawable/splash_button_back"/>
+</LinearLayout>

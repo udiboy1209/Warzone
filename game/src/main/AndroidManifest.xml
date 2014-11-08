@@ -25,7 +25,7 @@
         <activity
             android:name=".HighscoreActivity"
             android:label="Highscores"
-            android:theme="@android:style/Theme.Dialog"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
     </application>
 
