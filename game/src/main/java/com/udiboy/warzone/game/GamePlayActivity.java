@@ -18,7 +18,7 @@ public class GamePlayActivity extends Activity{
         setContentView(R.layout.activity_game_play);
         display = (DisplayPanel) findViewById(R.id.display);
 
-        display.setViews(findViewById(R.id.final_score), findViewById(R.id.current_score), findViewById(R.id.game_over_layout), findViewById(R.id.game_paused_layout));
+        display.setViews(findViewById(R.id.final_score), findViewById(R.id.current_score), findViewById(R.id.game_paused_layout));
 
         getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -46,12 +46,6 @@ public class GamePlayActivity extends Activity{
         else
             bg_music.start();
     }
-    /*@Override
-    public void onStop(){
-        Log.d("Warzone","onStop called");
-        display.exit_action=DisplayPanel.ACTION_QUIT;
-        super.onStop();
-    }*/
 
     public void mainMenu(View v){
         synchronized (display.thread){
@@ -81,11 +75,6 @@ public class GamePlayActivity extends Activity{
             display.state=DisplayPanel.STATE_GAME_RUNNING;
         }
     }
-
-    /*@Override
-    public void onPause(){
-        super.onPause();
-    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent i){

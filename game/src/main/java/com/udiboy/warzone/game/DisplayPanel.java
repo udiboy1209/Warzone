@@ -27,7 +27,7 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
     SensorManager manager;
     Sensor accelerometer;
     Bitmap background, button_pause, button_music_on, button_music_off;
-    View game_over, game_paused;
+    View game_paused;
     TextView final_score, current_score;
     Rect pause_button_rect, music_button_rect;
 
@@ -286,10 +286,9 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
         return true;
     }
 
-    public void setViews(View fs, View cs, View gol, View gpl){
+    public void setViews(View fs, View cs, View gpl){
         final_score=(TextView)fs;
         current_score=(TextView)cs;
         game_paused=gpl;
-        game_over =gol;
     }
 }

@@ -70,7 +70,7 @@ public class HighscoreActivity extends Activity {
                     }
                 }
 
-                if(position<9){
+                if(position<10){
                     findViewById(R.id.highscore_name).setVisibility(View.VISIBLE);
                     findViewById(R.id.save_score).setVisibility(View.VISIBLE);
                 }
