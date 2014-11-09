@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -17,8 +17,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class HighscoreActivity extends Activity {
-    ArrayList<Integer> highscores = new ArrayList<Integer>(10);
-    int score;
+    ArrayList<String> highscores = new ArrayList<String>(10);
+    int score,
+        position=10;
     public static final int ACTION_DISPLAY=0,
                             ACTION_SAVE=1;
 
@@ -31,11 +32,11 @@ public class HighscoreActivity extends Activity {
 
             String line;
             while((line=in.readLine())!=null){
-                highscores.add(Integer.valueOf(line));
+                highscores.add(line);
             }
         } catch (FileNotFoundException fe){
             for(int i=0; i<10; i++)
-                highscores.add(0);
+                highscores.add("---,0");
         }
         catch (IOException ie){}
 
@@ -49,7 +50,7 @@ public class HighscoreActivity extends Activity {
                 LinearLayout list = (LinearLayout) findViewById(R.id.highscores);
 
                 for (int i = 0; i < 10; i++) {
-                    ((TextView) (list.getChildAt(i))).setText((i + 1) + ".) " + highscores.get(i));
+                    ((TextView) (list.getChildAt(i))).setText((i + 1) + ".) " + getScore(0));
                 }
                 break;
             case ACTION_SAVE:
@@ -57,6 +58,20 @@ public class HighscoreActivity extends Activity {
                 score = data.getIntExtra("score",0);
 
                 ((TextView)findViewById(R.id.final_score)).setText("Your Score: "+score);
+
+                ((TextView)findViewById(R.id.top_score)).setText("Top Score: "+getScore(0));
+                for(int i=0; i<10; i++){
+                    if(score>getScore(i)){
+                        position=i;
+                        break;
+                    }
+                }
+
+                if(position<9){
+                    findViewById(R.id.highscore_name).setVisibility(View.VISIBLE);
+                    findViewById(R.id.save_score).setVisibility(View.VISIBLE);
+                }
+                break;
         }
     }
 
@@ -65,8 +80,8 @@ public class HighscoreActivity extends Activity {
         try{
             FileOutputStream out = openFileOutput("highscores", Context.MODE_PRIVATE);
 
-            for(int i : highscores){
-                out.write((i+"\n").getBytes());
+            for(String line : highscores){
+                out.write((line+"\n").getBytes());
             }
         }catch(FileNotFoundException fe){}
         catch(IOException ie){}
@@ -77,20 +92,33 @@ public class HighscoreActivity extends Activity {
         finish();
     }
 
+    public void replay(View v){
+        Intent i = new Intent();
+        i.setClass(this,GamePlayActivity.class);
+        startActivity(i);
+        finish();
+    }
+
     public void save(View v) {
         addToHighscores();
+        Intent i = new Intent();
+        i.setClass(this,HighscoreActivity.class);
+        i.putExtra("action",ACTION_DISPLAY);
+        startActivity(i);
         finish();
     }
 
     public void addToHighscores(){
-        for(int i=0; i<10; i++){
-            if(score>highscores.get(i)){
-                highscores.remove(9);
-                highscores.add(i, score);
-                Toast toast=Toast.makeText(this,"Highscore added at position "+(i+1), Toast.LENGTH_SHORT);
-                toast.show();
-                break;
-            }
-        }
+        if(position>9) return;
+        highscores.remove(9);
+        highscores.add(position,((EditText)findViewById(R.id.highscore_name)).getText().toString()+","+score);
+    }
+
+    public String getName(int index){
+        return highscores.get(index).split(",")[0];
+    }
+
+    public int getScore(int index){
+        return Integer.valueOf(highscores.get(index).split(",")[1]);
     }
 }
