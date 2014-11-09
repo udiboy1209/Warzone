@@ -50,7 +50,10 @@ public class HighscoreActivity extends Activity {
                 LinearLayout list = (LinearLayout) findViewById(R.id.highscores);
 
                 for (int i = 0; i < 10; i++) {
-                    ((TextView) (list.getChildAt(i))).setText((i + 1) + ".) " + getScore(0));
+                    LinearLayout hsContainer = (LinearLayout)list.getChildAt(i);
+                    ((TextView)hsContainer.findViewById(R.id.hs_score)).setText(""+getScore(i));
+                    ((TextView)hsContainer.findViewById(R.id.hs_name)).setText(getName(i));
+                    ((TextView)hsContainer.findViewById(R.id.hs_index)).setText((i+1)+".)");
                 }
                 break;
             case ACTION_SAVE:
@@ -75,19 +78,6 @@ public class HighscoreActivity extends Activity {
         }
     }
 
-    @Override
-    public void onStop(){
-        try{
-            FileOutputStream out = openFileOutput("highscores", Context.MODE_PRIVATE);
-
-            for(String line : highscores){
-                out.write((line+"\n").getBytes());
-            }
-        }catch(FileNotFoundException fe){}
-        catch(IOException ie){}
-        super.onStop();
-    }
-
     public void mainMenu(View v){
         finish();
     }
@@ -101,6 +91,17 @@ public class HighscoreActivity extends Activity {
 
     public void save(View v) {
         addToHighscores();
+
+        try{
+            FileOutputStream out = openFileOutput("highscores", Context.MODE_PRIVATE);
+
+            for(String line : highscores){
+                out.write((line+"\n").getBytes());
+            }
+            out.close();
+        }catch(FileNotFoundException fe){}
+        catch(IOException ie){}
+
         Intent i = new Intent();
         i.setClass(this,HighscoreActivity.class);
         i.putExtra("action",ACTION_DISPLAY);
