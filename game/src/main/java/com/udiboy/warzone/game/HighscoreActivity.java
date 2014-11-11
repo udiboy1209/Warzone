@@ -34,6 +34,13 @@ public class HighscoreActivity extends Activity {
             while((line=in.readLine())!=null){
                 highscores.add(line);
             }
+
+            if(line.split(",").length!=2) { //Should equal the no. of fields
+                highscores.clear();
+                for (int i = 0; i < 10; i++)
+                    highscores.add("---,0");
+            }
+
         } catch (FileNotFoundException fe){
             for(int i=0; i<10; i++)
                 highscores.add("---,0");
