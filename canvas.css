@@ -1,0 +1,119 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+
+footer {
+    right: 20%;
+}
+
+#hback {
+    width: 100%;
+    z-index: 2;
+    background-color: #DDD;
+    height:           100px;
+    text-align:       center;
+    position:         relative;
+}
+
+#hbar {
+    width:             96%;
+    height:            80px;
+    z-index: 2;
+    background-color:  #BADAFF;
+    border-top-left-radius: 30px 30px;
+    border-top-right-radius: 30px 30px;
+    border:             solid 2px #BEBEBE;
+    border-bottom:      0px;
+    position:           absolute;
+    bottom:             0px;
+    margin-left:        2%;
+    margin-right:       2%;
+    -moz-box-shadow:    0px 5px 7px #AAA;
+    -webkit-box-shadow: 0px 5px 7px #AAA;
+    box-shadow:         0px 5px 7px #AAA;
+}
+
+#wrapper{
+    border-collapse: collapse;
+    border:  0px;
+    margin:  0px;
+    width:   100%;
+    border-spacing: 0px;
+}
+
+#wrapper div {
+    position: fixed;
+}
+
+#left, #right {
+    height: 200px;
+    width:  2%;
+    z-index: 1;
+    background-color: #DDD;
+    border:           solid 2px #BEBEBE; 
+    border-top: 0px;
+    margin: 0px;
+}
+
+#left {
+    border-bottom-right-radius: 30px 30px;
+    border-left: 0px;
+    -moz-box-shadow:    5px 0px 7px #AAA;
+    -webkit-box-shadow: 5px 0px 7px #AAA;
+    box-shadow:         5px 0px 7px #AAA;
+}
+
+#right {
+    border-bottom-left-radius: 30px 30px;
+    border-right: 0px;
+    left: 98%;
+    -moz-box-shadow:    -5px 0px 7px #AAA;
+    -webkit-box-shadow: -5px 0px 7px #AAA;
+    box-shadow:         -5px 0px 7px #AAA;
+}
+
+#content-wrapper {
+    width: 96%;
+    left: 2%;
+    padding-bottom: 15px;
+    background-color: #D0D0D0;
+    height:           70%;
+    border-bottom-left-radius:  30px 30px;
+    border-bottom-right-radius: 30px 30px;
+    -webkit-animation-name:            dropDown;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-duration:        1.3s;
+    -webkit-animation-timing-function: ease-in-out;
+    -moz-animation-name:            dropDown;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-duration:        1.3s;
+    -moz-animation-timing-function: ease-in-out;
+}
+
+#content {
+    width:55.5%;
+    height: inherit;
+    padding-left: 20%;
+    padding-right: 20%;
+    overflow-y: scroll;
+}
+
+@-webkit-keyframes dropDown {
+    from {
+    height: 0px;
+    }
+    to {
+    height: 70%;
+    }
+}
+
+@-moz-keyframes dropDown {
+    from {
+    height: 0px;
+    }
+    to {
+    height: 70%;
+    }
+}

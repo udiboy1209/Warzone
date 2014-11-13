@@ -1,0 +1,79 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: Century Gothic, Ubuntu Light, Lucida, sans-serif;
+    color: #5F5FAB;
+}
+
+footer {
+    bottom: 10px;
+    position: fixed;
+    right: 33.5%;
+    text-align: right;
+}
+
+footer img {
+    height: 30px;
+    width: 30px;
+    margin: 3px;
+    -moz-box-shadow:            2px 5px 5px #AAA;
+    -webkit-box-shadow:         2px 5px 5px #AAA;
+    box-shadow:                 2px 5px 5px #AAA; 
+}
+
+footer h6 {
+    margin-right: 3px;
+    display: inline;
+}
+
+hr {
+    border-color: #6677DD;
+    border-style: solid;
+}
+
+p , li {
+    word-spacing: 5px;
+    line-height: 120%;
+}
+
+a {
+    font-weight: bold;
+    text-decoration: underline;
+    color: #3D3D9B;
+}
+
+@-webkit-keyframes dropDown {
+    from {
+        height: 4px;
+    } 
+    to {
+        height: 550px;
+    }
+}
+
+@-webkit-keyframes scrollUp {
+    from {
+        height: 550px;
+    } 
+    to {
+        height: 4px;
+    }
+}
+
+@-moz-keyframes dropDown {
+    from {
+        height: 4px;
+    } 
+    to {
+        height: 550px;
+    }
+}
+
+@-moz-keyframes scrollUp {
+    from {
+        height: 550px;
+    } 
+    to {
+        height: 4px;
+    }
+}
