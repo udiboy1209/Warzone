@@ -27,6 +27,11 @@
             android:label="Highscores"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".HowToPlayDialog"
+            android:label="How To Play"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

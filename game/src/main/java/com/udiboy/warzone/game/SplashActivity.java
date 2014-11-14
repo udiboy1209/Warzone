@@ -95,6 +95,12 @@ public class SplashActivity extends Activity {
         startActivity(i);
     }
 
+    public void howToPlay(View v){
+        Intent i = new Intent();
+        i.setClass(this, HowToPlayDialog.class);
+        startActivity(i);
+    }
+
     public void onActivityResult(int reqCode, int resCode, Intent data){
         if(resCode == RESULT_OK){
             if(data.getBooleanExtra("replay",false)){

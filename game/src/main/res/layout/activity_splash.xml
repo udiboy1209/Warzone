@@ -43,7 +43,8 @@
         android:layout_width="wrap_content"
         android:text="Start Game"
         android:id="@+id/how_to_play"
-        android:src="@drawable/splash_how_to_play" />
+        android:src="@drawable/splash_how_to_play"
+        android:onClick="howToPlay" />
 
     <ImageButton
         style="@style/ButtonSplash"
