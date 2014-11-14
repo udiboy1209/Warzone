@@ -5,6 +5,10 @@ A fun android game under development!
 
 It has a stickman as the main character. He is in the middle of a war zone where missiles are showering over him. Your goal is to make him dodge missiles for as long as possible.
 
+The game's website : https://udiboy1209.github.io/Warzone/
+
+Download the latest apk here: [direct-download link](https://drive.google.com/uc?export=download&id=0B_6rvZNWXShpRDJCM1hzYjdGNDg)
+
 Project Details
 ===============
 
