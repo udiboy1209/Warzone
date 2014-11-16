@@ -12,6 +12,8 @@ public class HowToPlayDialog extends Activity {
         super.onCreate(icicle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_how_to_play);
+
+        FontHelper.applyFont(this, findViewById(R.id.activity_root), "fonts/defused.ttf");
     }
 
     public void mainMenu(View v){

@@ -84,6 +84,8 @@ public class HighscoreActivity extends Activity {
                 }
                 break;
         }
+
+        FontHelper.applyFont(this, findViewById(R.id.activity_root), "fonts/defused.ttf");
     }
 
     public void mainMenu(View v){

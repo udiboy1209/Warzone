@@ -28,6 +28,8 @@ public class SplashActivity extends Activity {
         bg_music.setVolume(1.0f, 1.0f);
 
         splash_logo = (ImageView) findViewById(R.id.splash_logo);
+
+        FontHelper.applyFont(this, findViewById(R.id.activity_root), "fonts/defused.ttf");
     }
 
     @Override

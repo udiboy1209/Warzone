@@ -28,6 +28,8 @@ public class GamePlayActivity extends Activity{
         end_music=MediaPlayer.create(this, R.raw.music_end);
         end_music.setLooping(true);
         end_music.setVolume(1.0f, 1.0f);
+
+        FontHelper.applyFont(this, findViewById(R.id.activity_root), "fonts/defused.ttf");
     }
 
     @Override

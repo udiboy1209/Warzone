@@ -5,7 +5,8 @@
     android:orientation="horizontal"
     android:gravity="center"
     android:background="@drawable/splash_back"
-    tools:context="com.udiboy.warzone.game.SplashActivity">
+    tools:context="com.udiboy.warzone.game.SplashActivity"
+    android:id="@+id/activity_root">
 
 <ImageView
     android:layout_width="0dp"
@@ -22,35 +23,31 @@
     android:layout_weight="1"
     android:weightSum="6">
 
-    <ImageButton
+    <Button
         android:layout_width="wrap_content"
-        android:text="Start Game"
+        android:text="START GAME"
         android:id="@+id/start_game"
-        style="@style/ButtonSplash"
-        android:onClick="startGame"
-        android:src="@drawable/splash_start_game"/>
+        style="@style/Button"
+        android:onClick="startGame"/>
 
-    <ImageButton
-        style="@style/ButtonSplash"
+    <Button
+        style="@style/Button"
         android:layout_width="wrap_content"
-        android:text="Start Game"
+        android:text="HIGHSCORES"
         android:id="@+id/highscore"
-        android:src="@drawable/splash_highscore"
         android:onClick="highscores" />
 
-    <ImageButton
-        style="@style/ButtonSplash"
+    <Button
+        style="@style/Button"
         android:layout_width="wrap_content"
-        android:text="Start Game"
+        android:text="HOW TO PLAY"
         android:id="@+id/how_to_play"
-        android:src="@drawable/splash_how_to_play"
         android:onClick="howToPlay" />
 
-    <ImageButton
-        style="@style/ButtonSplash"
+    <Button
+        style="@style/Button"
         android:layout_width="wrap_content"
-        android:text="Start Game"
-        android:src="@drawable/splash_credits"
+        android:text="CREDITS"
         android:id="@+id/credits" />
 
 </LinearLayout>

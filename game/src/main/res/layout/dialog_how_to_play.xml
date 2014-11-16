@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/splash_back">
-    <ImageView
+    android:background="@drawable/splash_back"
+    android:id="@+id/activity_root">
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:src="@drawable/how_to_play_big"
+        android:text="HOW TO PLAY"
         android:layout_weight="1" />
     <ImageView
         android:layout_width="fill_parent"
@@ -31,20 +32,20 @@
         android:gravity="center"
         android:padding="5dp"
         android:weightSum="5">
-        <ImageButton
+        <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:background="@drawable/splash_button_back"
-            android:src="@drawable/main_menu"
+            android:text="MAIN MENU"
             android:layout_marginRight="10dp"
             android:onClick="mainMenu" />
-        <ImageButton
+        <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:background="@drawable/splash_button_back"
-            android:src="@drawable/splash_start_game"
+            android:text="START GAME"
             android:onClick="startGame" />
         </LinearLayout>
 </LinearLayout>
