@@ -27,25 +27,25 @@
         android:layout_width="wrap_content"
         android:text="START GAME"
         android:id="@+id/start_game"
-        style="@style/Button"
+        style="@style/Button.Splash"
         android:onClick="startGame"/>
 
     <Button
-        style="@style/Button"
+        style="@style/Button.Splash"
         android:layout_width="wrap_content"
         android:text="HIGHSCORES"
         android:id="@+id/highscore"
         android:onClick="highscores" />
 
     <Button
-        style="@style/Button"
+        style="@style/Button.Splash"
         android:layout_width="wrap_content"
         android:text="HOW TO PLAY"
         android:id="@+id/how_to_play"
         android:onClick="howToPlay" />
 
     <Button
-        style="@style/Button"
+        style="@style/Button.Splash"
         android:layout_width="wrap_content"
         android:text="CREDITS"
         android:id="@+id/credits" />

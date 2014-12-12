@@ -28,15 +28,13 @@
             android:visibility="visible" />
 
         <TextView
+            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Your Score: "
             android:id="@+id/current_score"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textIsSelectable="false"
-            android:textSize="20dp" />
+            android:layout_weight="1"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -46,22 +44,20 @@
             android:gravity="center" >
 
             <Button
+                style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/resume"
                 android:text="RESUME"
-                android:background="@drawable/splash_button_back"
-                android:layout_margin="15dp"
                 android:onClick="resume"
                 android:layout_weight="1" />
 
             <Button
+                style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_menu2"
                 android:text="MAIN MENU"
-                android:background="@drawable/splash_button_back"
-                android:layout_margin="15dp"
                 android:onClick="mainMenu"
                 android:layout_weight="1" />
         </LinearLayout>
