@@ -9,16 +9,32 @@
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@null</item>
-        <item name="metaButtonBarStyle">@style/ButtonBar</item>
+        <item name="metaButtonBarStyle">@style/ThemeButtonBar</item>
         <item name="metaButtonBarButtonStyle">@style/ButtonBarButton</item>
     </style>
 
-    <style name="ButtonBar">
+    <style name="ThemeButtonBar">
         <item name="android:paddingLeft">2dp</item>
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingRight">2dp</item>
         <item name="android:paddingBottom">0dp</item>
         <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+    
+    <style name="ButtonBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <style name="ButtonBar.Vertical" parent="ButtonBar">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_height">fill_parent</item>
+    </style>
+    
+    <style name="ButtonBar.Horizontal" parent="ButtonBar">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">fill_parent</item>
     </style>
 
     <style name="ButtonBarButton" />

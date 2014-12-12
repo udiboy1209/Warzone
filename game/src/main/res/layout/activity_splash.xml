@@ -16,12 +16,10 @@
     android:layout_weight="2" />
 
 <LinearLayout
-    android:orientation="vertical"
+    style="@style/ButtonBar.Vertical"
     android:layout_width="0dp"
-    android:layout_height="fill_parent"
-    android:gravity="center"
-    android:layout_weight="1"
-    android:weightSum="6">
+    android:weightSum="6"
+    android:layout_weight="1">
 
     <Button
         android:layout_width="wrap_content"

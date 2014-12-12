@@ -69,13 +69,8 @@
         android:visibility="gone"/>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:weightSum="5"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal">
+        style="@style/ButtonBar.Horizontal"
+        android:weightSum="5">
 
         <Button
             style="@style/Button"
