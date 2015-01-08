@@ -7,9 +7,8 @@
     <TextView
         style="@style/Text.Heading"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:text="HOW TO PLAY"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:text="HOW TO PLAY" />
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="3dp"
@@ -19,30 +18,21 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="5">
+        android:layout_weight="1">
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/how_to_play_content"/>
     </ScrollView>
     <LinearLayout
-        style="@style/ButtonBar.Horizontal"
-        android:weightSum="5">
+        style="@style/ButtonBar.Horizontal">
         <Button
             style="@style/Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="@drawable/splash_button_back"
             android:text="MAIN MENU"
             android:layout_marginRight="10dp"
             android:onClick="mainMenu" />
         <Button
             style="@style/Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="@drawable/splash_button_back"
             android:text="START GAME"
             android:onClick="startGame" />
         </LinearLayout>

@@ -6,15 +6,13 @@
     android:background="@drawable/splash_back"
     android:paddingBottom="20dp"
     android:paddingTop="20dp"
-    android:weightSum="8"
     android:gravity="center_vertical"
     tools:context="com.udiboy.warzone.game.HighscoreActivity"
     android:id="@+id/activity_root">
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:text="GAME OVER"
         style="@style/Text.Heading"/>
 
@@ -28,23 +26,21 @@
     <TextView
         style="@style/Text"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="Top Score: "
-        android:id="@+id/top_score"
-        android:layout_weight="1"/>
+        android:id="@+id/top_score"/>
 
     <TextView
         style="@style/Text"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="Your Score: "
-        android:id="@+id/final_score"
-        android:layout_weight="1"/>
+        android:id="@+id/final_score"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:weightSum="5"
         android:gravity="center">
         <EditText
@@ -60,31 +56,21 @@
 
     <Button
         style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
         android:id="@+id/save_score"
         android:text="SAVE SCORE"
         android:onClick="save"
         android:visibility="gone"/>
 
     <LinearLayout
-        style="@style/ButtonBar.Horizontal"
-        android:weightSum="5">
+        style="@style/ButtonBar.Horizontal">
 
         <Button
             style="@style/Button"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="fill_parent"
             android:text="MAIN MENU"
             android:onClick="mainMenu"/>
 
         <Button
             style="@style/Button"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="2"
             android:text="REPLAY"
             android:onClick="replay"/>
 

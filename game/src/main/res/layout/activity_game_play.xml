@@ -21,8 +21,7 @@
 
         <ImageView
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_height="wrap_content"
             android:src="@drawable/game_paused"
             android:scaleType="fitCenter"
             android:visibility="visible" />
@@ -30,38 +29,30 @@
         <TextView
             style="@style/Text"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Your Score: "
-            android:id="@+id/current_score"
-            android:layout_weight="1"/>
+            android:id="@+id/current_score"/>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center"
-            style="@style/ButtonBar.Horizontal"
-            android:visibility="gone">
+            style="@style/ButtonBar.Horizontal">
 
             <Button
                 style="@style/Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/resume"
                 android:text="RESUME"
-                android:onClick="resume"
-                android:layout_weight="1" />
+                android:onClick="resume"/>
 
             <Button
                 style="@style/Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/main_menu2"
                 android:text="MAIN MENU"
-                android:onClick="mainMenu"
-                android:layout_weight="1" />
+                android:onClick="mainMenu" />
         </LinearLayout>
     </LinearLayout>
 
