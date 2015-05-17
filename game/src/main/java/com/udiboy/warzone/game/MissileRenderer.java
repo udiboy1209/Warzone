@@ -23,6 +23,8 @@ public class MissileRenderer {
         missile_render_field_width,
         ground_level;
 
+    int num_missiles_dodging=0;
+
     private static final float GRAVITY = 0.09f;// pixel/update^2
 
     public MissileRenderer(Bitmap bitmap_fall, Bitmap bitmap_blink, Bitmap bitmap_explode){
@@ -172,19 +174,39 @@ public class MissileRenderer {
         return false;
     }
 
-    public int checkCollisionWithCharacter(Rect rect) {
+    public int checkCollisionWithCharacter(GameCharacter character) {
         int num = 0;
         for(Missile missile : missiles){
             if(missile.state==Missile.STATE_EXPLODING) continue;
 
             Rect missile_rect = new Rect(missile.getX(), missile.getY(), missile.getX()+width, missile.getY()+height);
-            if(Rect.intersects(rect,  missile_rect)){
+            if(Rect.intersects(character.getRect(),  missile_rect)){
                 num++;
                 missile.setState(Missile.STATE_EXPLODING);
             }
         }
 
         return num;
+    }
+
+    public int numMissilesDodged(GameCharacter character){
+        int num=0;
+
+        for(Missile  missile : missiles){
+            if(missile.getState() == Missile.STATE_EXPLODING) continue;
+
+            if(missile.y < screen_height*2/3) continue;
+
+            if(missile.x>(character.x-character.getWidth()/2) && character.x < (character.x+character.getWidth()/2)){
+                num++;
+            }
+        }
+
+        int num_dodged = num_missiles_dodging-num;
+
+        num_missiles_dodging = num;
+
+        return (num_dodged>0?num_dodged:0);
     }
 
     public float getExplosionForce(float x) {

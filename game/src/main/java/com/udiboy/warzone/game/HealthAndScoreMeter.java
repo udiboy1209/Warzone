@@ -6,6 +6,7 @@ import android.graphics.Paint;
 public class HealthAndScoreMeter {
     int screen_width, screen_height;
     float score = 0, health = 100, displayed_health = 100;
+    int dodged=0;
 
     public HealthAndScoreMeter(){
     }
@@ -27,7 +28,7 @@ public class HealthAndScoreMeter {
         return displayed_health;
     }
 
-    public void update(float health_incr, float score_incr){
+    public void update(float health_incr, float score_incr, int dodged){
         health+=health_incr;
 
         if(health < 0) health = 0;
@@ -35,6 +36,9 @@ public class HealthAndScoreMeter {
         if(health > 100) health = 100;
 
         score+=score_incr;
+        score+=dodged*100;
+
+        this.dodged+=dodged;
 
         if(displayed_health <Math.round(health))
             displayed_health++;
@@ -60,6 +64,8 @@ public class HealthAndScoreMeter {
         paint.setARGB(255, 70, 200, 200);
         paint.setStyle(Paint.Style.FILL);
         paint.setTextSize(screen_height * 0.05f);
-        canvas.drawText("Score: "+String.valueOf(Math.round(score)), screen_width * 0.6f, screen_height * 0.1f, paint);
+        canvas.drawText("Score: "+Math.round(score)+" Dodged: "+dodged, screen_width * 0.6f, screen_height * 0.1f, paint);
+
+
     }
 }

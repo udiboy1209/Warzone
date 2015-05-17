@@ -184,7 +184,7 @@ public class DisplayPanel extends SurfaceView implements SurfaceHolder.Callback,
                 missile_renderer.setMissileRenderField(character.x + character.getWidth() / 2);
                 missile_renderer.update();
 
-                health_and_score.update(missile_renderer.checkCollisionWithCharacter(character.getRect()) * -25 + 0.01f, 4 * Math.abs(character_movement) + 1);
+                health_and_score.update(missile_renderer.checkCollisionWithCharacter(character) * -25 + 0.01f, 4 * Math.abs(character_movement) + 1, missile_renderer.numMissilesDodged(character));
 
                 character_movement = 0;
                 break;
